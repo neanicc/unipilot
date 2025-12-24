@@ -34,12 +34,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      if (USE_BACKEND) {
-        const authenticated = await isAuthenticated();
-        setIsLoggedIn(authenticated);
-      } else {
-        setIsLoggedIn(true);
-      }
+      // Always check Supabase auth since chat services require it
+      const authenticated = await isAuthenticated();
+      setIsLoggedIn(authenticated);
       setAuthLoading(false);
     };
     checkAuth();
@@ -479,7 +476,14 @@ const App: React.FC = () => {
             />
 
             <button
-              onClick={logout}
+              onClick={() => {
+                logout().catch(err => {
+                  console.error('Logout error:', err);
+                  // Force logout by clearing state and reloading
+                  setIsLoggedIn(false);
+                  window.location.reload();
+                });
+              }}
               className="p-2 text-gray-400 hover:text-red-600 transition-colors"
               title="Log Out"
             >

@@ -157,7 +157,7 @@ export const generateResponse = async (
   try {
     // Correct logic for @google/generative-ai
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-2.5-flash",
       systemInstruction: systemInstruction,
       tools: [displayMapTool]
     });
@@ -271,7 +271,7 @@ export const generateEventSummary = async (
   `;
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
     const result = await retryWithBackoff(() => model.generateContent(prompt));
     return result.response.text();
   } catch (e: any) {
