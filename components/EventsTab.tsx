@@ -14,6 +14,12 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
   const [summary, setSummary] = useState<string | null>(null);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
 
+  // Clear summary when switching universities
+  React.useEffect(() => {
+    setSummary(null);
+    setIsLoadingSummary(false);
+  }, [university.id]);
+
   const handleGenerateSummary = async () => {
     setIsLoadingSummary(true);
     try {
@@ -43,7 +49,7 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-      
+
       {/* Header Section */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
@@ -58,34 +64,34 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
         <div className="bg-white/60 backdrop-blur-sm p-5 rounded-xl">
           {!summary && !isLoadingSummary && (
             <div className="flex items-center justify-between">
-               <div>
-                 <h3 className="font-semibold text-gray-900">Need a quick update?</h3>
-                 <p className="text-xs text-gray-500">Ask {university.personaName} to summarize the week.</p>
-               </div>
-               <button 
+              <div>
+                <h3 className="font-semibold text-gray-900">Need a quick update?</h3>
+                <p className="text-xs text-gray-500">Ask {university.personaName} to summarize the week.</p>
+              </div>
+              <button
                 onClick={handleGenerateSummary}
                 className={`flex items-center gap-2 px-4 py-2 bg-${university.themeColor} text-white rounded-lg font-medium hover:opacity-90 transition-all shadow-md active:scale-95`}
-               >
-                 <Sparkles size={16} />
-                 Get AI Briefing
-               </button>
+              >
+                <Sparkles size={16} />
+                Get AI Briefing
+              </button>
             </div>
           )}
 
           {isLoadingSummary && (
-             <div className="flex items-center justify-center py-4 space-x-2 text-gray-500">
-                <Sparkles className="animate-pulse text-purple-500" size={20} />
-                <span className="text-sm font-medium">Generating insights...</span>
-             </div>
+            <div className="flex items-center justify-center py-4 space-x-2 text-gray-500">
+              <Sparkles className="animate-pulse text-purple-500" size={20} />
+              <span className="text-sm font-medium">Generating insights...</span>
+            </div>
           )}
 
           {summary && (
             <div className="animate-in fade-in duration-300">
-                <div className="flex items-center gap-2 mb-2">
-                    <Sparkles size={16} className="text-purple-600" />
-                    <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">AI Insight from {university.personaName}</span>
-                </div>
-                <MarkdownRenderer content={summary} textColorClass="text-gray-700" />
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles size={16} className="text-purple-600" />
+                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">AI Insight from {university.personaName}</span>
+              </div>
+              <MarkdownRenderer content={summary} textColorClass="text-gray-700" />
             </div>
           )}
         </div>
@@ -94,36 +100,36 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
       {/* Events List */}
       <div className="space-y-4">
         {events.length === 0 ? (
-             <div className="text-center py-10 text-gray-400">
-                <p>No upcoming events found.</p>
-             </div>
+          <div className="text-center py-10 text-gray-400">
+            <p>No upcoming events found.</p>
+          </div>
         ) : (
-            events.map(event => (
+          events.map(event => (
             <div key={event.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center gap-2">
-                         <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${getCategoryColor(event.category)}`}>
-                            {event.category}
-                         </span>
-                         <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{event.date}</span>
-                    </div>
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${getCategoryColor(event.category)}`}>
+                    {event.category}
+                  </span>
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{event.date}</span>
                 </div>
-                
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{event.title}</h3>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">{event.description}</p>
-                
-                <div className="flex items-center gap-4 text-xs text-gray-500">
-                    <div className="flex items-center gap-1">
-                        <Clock size={14} />
-                        <span>{event.time}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <MapPin size={14} />
-                        <span>{event.location}</span>
-                    </div>
+              </div>
+
+              <h3 className="text-lg font-bold text-gray-900 mb-2">{event.title}</h3>
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed">{event.description}</p>
+
+              <div className="flex items-center gap-4 text-xs text-gray-500">
+                <div className="flex items-center gap-1">
+                  <Clock size={14} />
+                  <span>{event.time}</span>
                 </div>
+                <div className="flex items-center gap-1">
+                  <MapPin size={14} />
+                  <span>{event.location}</span>
+                </div>
+              </div>
             </div>
-            ))
+          ))
         )}
       </div>
     </div>

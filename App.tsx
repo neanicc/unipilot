@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { UNIVERSITIES, DEFAULT_UNIVERSITY_ID, USE_BACKEND, INITIAL_BADGES } from './constants';
 import { Message, Sender, UserStats, ChatSession } from './types';
 import { generateResponse } from './services/geminiService';
-import { getUserStats, processUserInteraction, generateUserContextSummary } from './services/statsService'; // Updated import
-import { getChatSessions, createChatSession, addMessage, deleteChatSession } from './services/chatService'; // New import
-import { isAuthenticated, logout } from './services/authService';
+import { getUserStats, processUserInteraction, generateUserContextSummary } from './services/statsService';
+import { getChatSessions, createChatSession, addMessage, deleteChatSession } from './services/chatService';
+import { isAuthenticated, logout, getUserProfile } from './services/authService';
 import { DATA_UW, DATA_UOFT, DATA_MAC, DATA_WESTERN, DATA_QUEENS, DATA_TMU } from './services/campusData';
 import UniversitySelector from './components/UniversitySelector';
 import MessageBubble from './components/MessageBubble';
@@ -18,7 +18,7 @@ import { Send, GraduationCap, Info, Trash2, Trophy, Check, Star, MessageSquare, 
 const generateId = () => Math.random().toString(36).substring(2, 9);
 
 const App: React.FC = () => {
-  console.log("App component is initializing...");
+  // console.log("App component is initializing...");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -34,12 +34,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      if (USE_BACKEND) {
-        const authenticated = await isAuthenticated();
-        setIsLoggedIn(authenticated);
-      } else {
-        setIsLoggedIn(true);
-      }
+      // Always check Supabase auth since chat services require it
+      const authenticated = await isAuthenticated();
+      setIsLoggedIn(authenticated);
       setAuthLoading(false);
     };
     checkAuth();
@@ -60,7 +57,7 @@ const App: React.FC = () => {
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
-  const [notification, setNotification] = useState<{ text: string, type: 'success' | 'achievement' } | null>(null);
+  const [notification, setNotification] = useState<{ text: string, type: 'success' | 'achievement' | 'error' } | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -87,6 +84,16 @@ const App: React.FC = () => {
     if (isLoggedIn) {
       const loadData = async () => {
         try {
+          // Load User Profile for preferred university
+          let profile = null;
+          if (USE_BACKEND) {
+            profile = await getUserProfile();
+            if (profile && profile.selected_university_id) {
+              setSelectedUniId(profile.selected_university_id);
+              prevUniIdRef.current = profile.selected_university_id;
+            }
+          }
+
           // Load Stats
           const stats = await getUserStats();
           setUserStats(stats);
@@ -106,7 +113,10 @@ const App: React.FC = () => {
           setSessions(hydratedSessions);
 
           // Select current university session if exists
-          const currentUniSessions = hydratedSessions.filter(s => s.universityId === selectedUniId);
+          // If we loaded a profile, prefer that ID, otherwise use default/current
+          const targetUniId = (profile?.selected_university_id) || selectedUniId;
+
+          const currentUniSessions = hydratedSessions.filter(s => s.universityId === targetUniId);
           if (currentUniSessions.length > 0) {
             const latest = currentUniSessions[0];
             setCurrentSessionId(latest.id);
@@ -139,6 +149,7 @@ const App: React.FC = () => {
           timestamp: new Date()
         }]);
       }
+      setActiveTab('chat'); // Reset to chat tab on university change
     }
   }, [selectedUniId, sessions, currentUniversity]);
 
@@ -280,10 +291,7 @@ const App: React.FC = () => {
       // 6. Persist AI message to backend
       let savedAiMessage: Message | null = null;
       if (activeSessionId) {
-        // Note: We might want to pass mapLocation to backend if schema supports it, 
-        // but for now assuming text only or handle map separately if needed
         savedAiMessage = await addMessage(activeSessionId, text, Sender.AI);
-        // If mapLocation needs to be saved, we'd need to update the schema or store it in metadata
       }
 
       const newAiMessage: Message = {
@@ -309,7 +317,10 @@ const App: React.FC = () => {
 
     } catch (error) {
       console.error("Error in message flow", error);
-      // Optionally show error notification
+      setNotification({
+        type: 'error',
+        text: "Failed to send message. Please try again."
+      });
     } finally {
       setIsLoading(false);
       inputRef.current?.focus();
@@ -357,9 +368,13 @@ const App: React.FC = () => {
     <div className="flex flex-col h-screen bg-gray-50 text-gray-900 font-sans overflow-hidden relative">
 
       {notification && (
-        <div className={`absolute top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-lg z-50 animate-in slide-in-from-top-5 fade-in flex items-center gap-2 font-bold transition-colors ${notification.type === 'achievement' ? 'bg-yellow-500 text-white' : 'bg-green-600 text-white'
+        <div className={`absolute top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-lg z-50 animate-in slide-in-from-top-5 fade-in flex items-center gap-2 font-bold transition-colors ${notification.type === 'achievement' ? 'bg-yellow-500 text-white' :
+          notification.type === 'error' ? 'bg-red-500 text-white' :
+            'bg-green-600 text-white'
           }`}>
-          {notification.type === 'achievement' ? <Star className="fill-current" size={18} /> : <Check size={18} />}
+          {notification.type === 'achievement' ? <Star className="fill-current" size={18} /> :
+            notification.type === 'error' ? <Info size={18} /> :
+              <Check size={18} />}
           {notification.text}
         </div>
       )}
@@ -462,7 +477,14 @@ const App: React.FC = () => {
             />
 
             <button
-              onClick={logout}
+              onClick={() => {
+                logout().catch(err => {
+                  console.error('Logout error:', err);
+                  // Force logout by clearing state and reloading
+                  setIsLoggedIn(false);
+                  window.location.reload();
+                });
+              }}
               className="p-2 text-gray-400 hover:text-red-600 transition-colors"
               title="Log Out"
             >
@@ -475,8 +497,8 @@ const App: React.FC = () => {
           <button
             onClick={() => setActiveTab('chat')}
             className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'chat'
-                ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
+              : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
           >
             <MessageSquare size={16} />
@@ -485,8 +507,8 @@ const App: React.FC = () => {
           <button
             onClick={() => setActiveTab('events')}
             className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'events'
-                ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
+              : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
           >
             <Calendar size={16} />
@@ -495,8 +517,8 @@ const App: React.FC = () => {
           <button
             onClick={() => setActiveTab('multifaith')}
             className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'multifaith'
-                ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
+              : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
           >
             <Heart size={16} />
@@ -590,8 +612,8 @@ const App: React.FC = () => {
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
                     className={`p-2 rounded-xl transition-all transform active:scale-95 ${input.trim() && !isLoading
-                        ? `bg-${currentUniversity.themeColor} text-white shadow-md hover:opacity-90`
-                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      ? `bg-${currentUniversity.themeColor} text-white shadow-md hover:opacity-90`
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       }`}
                   >
                     <Send size={18} />

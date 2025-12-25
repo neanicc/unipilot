@@ -11,19 +11,39 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [universityId, setUniversityId] = useState('uw');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const validatePassword = (pwd: string) => {
+    // At least 8 chars, 1 uppercase, 1 lowercase, 1 special char
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+    return regex.test(pwd);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (!isLogin) {
+      if (!validatePassword(password)) {
+        setError('Password must be at least 8 characters and include uppercase, lowercase, and a special character (!@#$%^&*).');
+        return;
+      }
+      if (!name.trim()) {
+        setError('Please enter your name.');
+        return;
+      }
+    }
+
     setIsLoading(true);
 
     try {
       if (isLogin) {
         await login(email, password);
       } else {
-        await register(email, password);
+        await register(email, password, name, universityId);
       }
       onAuthSuccess();
     } catch (err: any) {
@@ -65,7 +85,21 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
               {error}
             </div>
           )}
-          
+
+          {!isLogin && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                placeholder="John Doe"
+              />
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input
@@ -88,7 +122,26 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
               className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
               placeholder="••••••••"
             />
+            {!isLogin && <p className="text-xs text-gray-400 mt-1">Min 8 chars, Upper, Lower, Special (!@#$)</p>}
           </div>
+
+          {!isLogin && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Select University</label>
+              <select
+                value={universityId}
+                onChange={(e) => setUniversityId(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-white"
+              >
+                <option value="uw">University of Waterloo</option>
+                <option value="uoft">University of Toronto</option>
+                <option value="mac">McMaster University</option>
+                <option value="western">Western University</option>
+                <option value="queens">Queen's University</option>
+                <option value="tmu">Toronto Metropolitan U</option>
+              </select>
+            </div>
+          )}
 
           <button
             type="submit"

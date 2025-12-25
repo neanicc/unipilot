@@ -213,36 +213,93 @@ export const incrementMessageCount = async (): Promise<void> => {
  * Process user interaction (message sent)
  * This is a convenience function that handles XP, badges, and topics
  */
+/**
+ * Process user interaction (message sent)
+ * Optimize: Batches all updates into a single DB call
+ */
 export const processUserInteraction = async (
     messageText: string,
     topics: string[] = []
 ): Promise<{ newBadges: Badge[]; leveledUp: boolean }> => {
-    const oldStats = await getUserStats();
+    const userId = await getUserId();
+    if (!userId) return { newBadges: [], leveledUp: false };
 
-    // Increment message count and award XP
-    await incrementMessageCount();
+    // 1. Fetch current state once
+    const currentStats = await getUserStats();
 
-    // Add explored topics
+    // 2. Calculate New State locally
+    let {
+        experience,
+        level,
+        badges,
+        topicsExplored,
+        messagesCount
+    } = currentStats;
+
+    // A. Increment Message Count & Basic XP
+    messagesCount += 1;
+    experience += 10; // 10 XP per message
+
+    // B. Add new topics
+    let topicsChanged = false;
     for (const topic of topics) {
-        await addExploredTopic(topic);
+        if (!topicsExplored.includes(topic)) {
+            topicsExplored = [...topicsExplored, topic];
+            topicsChanged = true;
+        }
     }
 
-    const newStats = await getUserStats();
+    // C. Check Badges locally
+    const badgesToUnlock: string[] = [];
 
-    // Check if user leveled up
-    const leveledUp = newStats.level > oldStats.level;
+    // - Freshman: First message
+    if (messagesCount === 1) badgesToUnlock.push('freshman');
 
-    // Get newly unlocked badges
-    const newBadges = newStats.badges.filter(
-        (badge, idx) => badge.unlocked && !oldStats.badges[idx].unlocked
+    // - Night Owl: Message between 10PM and 6AM
+    const hour = new Date().getHours();
+    if (hour >= 22 || hour < 6) badgesToUnlock.push('night_owl');
+
+    // - Explorer: 3+ topics
+    if (topicsExplored.length >= 3) badgesToUnlock.push('explorer');
+
+    // - Scholar: Level 5+
+    // Calculate potential new level to check for Scholar
+    const potentialNewLevel = calculateLevel(experience + (badgesToUnlock.length * 50)); // Estimate generic badge XP
+    if (potentialNewLevel >= 5) badgesToUnlock.push('scholar');
+
+    // Apply unlocks
+    let badgesChanged = false;
+    for (const badgeId of badgesToUnlock) {
+        const badge = badges.find(b => b.id === badgeId);
+        if (badge && !badge.unlocked) {
+            // Unlock and award XP
+            badges = badges.map(b => b.id === badgeId ? { ...b, unlocked: true } : b);
+            experience += 50; // 50 XP per badge
+            badgesChanged = true;
+        }
+    }
+
+    // D. Recalculate Level
+    const newLevel = calculateLevel(experience);
+    const leveledUp = newLevel > level;
+
+    // 3. Perform SINGLE Database Update
+    await updateUserStats({
+        messagesCount,
+        experience, // Level is auto-calc inside update
+        topicsExplored: topicsChanged ? topicsExplored : undefined,
+        badges: badgesChanged ? badges : undefined
+    });
+
+    // 4. Return results (diffing new vs old badges for notification)
+    const newDbBadges = badges.filter(
+        (badge, idx) => badge.unlocked && !currentStats.badges[idx].unlocked
     );
 
-    // Check if user reached level 5 for keener badge
-    if (newStats.level >= 5) {
-        await unlockBadge('scholar');
-    }
-
-    return { newBadges, leveledUp };
+    return {
+        newBadges: newDbBadges,
+        leveledUp
+    };
 };
 
 /**

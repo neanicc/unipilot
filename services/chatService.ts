@@ -123,7 +123,7 @@ export const updateChatSession = async (
     const userId = await getUserId();
     if (!userId) throw new Error('User not authenticated');
 
-    const updateData: any = {};
+    const updateData: { title?: string; university_id?: string } = {};
     if (updates.title) updateData.title = updates.title;
     if (updates.universityId) updateData.university_id = updates.universityId;
 

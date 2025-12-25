@@ -3,7 +3,7 @@ import { UniversityProfile, Badge } from './types';
 
 // FEATURE FLAG: Set to true to use the Python FastAPI backend
 // Set to false to use the client-side Google GenAI SDK (Demo Mode)
-export const USE_BACKEND = true;
+export const USE_BACKEND = false;
 export const API_BASE_URL = 'http://localhost:8000/api';
 
 export const UNIVERSITIES: UniversityProfile[] = [
