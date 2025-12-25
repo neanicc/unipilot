@@ -56,56 +56,117 @@ export const DATA_UW: CampusData = {
   events: [
     {
       id: 'uw1',
-      title: 'Co-op Resume Critique',
-      date: 'Oct 24',
-      time: '5:00 PM - 7:00 PM',
-      location: 'Tatham Centre (TC)',
-      description: 'Get your resume reviewed by senior students and advisors before the main round.',
-      category: 'Career'
+      title: 'Winter Term Kickoff: New Year, New Goals',
+      date: 'Jan 06',
+      time: '12:00 PM - 2:00 PM',
+      location: 'SLC Great Hall',
+      description: 'Start the term right with goal-setting workshops, free lunch, and meet new students.',
+      category: 'Wellness'
     },
     {
       id: 'uw2',
-      title: 'Bomber Wednesday',
-      date: 'Oct 25',
-      time: '8:00 PM - 1:00 AM',
-      location: 'The Bomber',
-      description: 'Weekly social night at the campus pub. 19+ only.',
-      category: 'Social'
+      title: 'Co-op Job Search Workshop',
+      date: 'Jan 07',
+      time: '4:00 PM - 5:30 PM',
+      location: 'Tatham Centre (TC 2218)',
+      description: 'Learn strategies for finding and landing co-op positions this term.',
+      category: 'Career'
     },
     {
       id: 'uw3',
-      title: 'Midnight Breakfast',
-      date: 'Oct 26',
-      time: '11:00 PM - 1:00 AM',
-      location: 'SLC Great Hall',
-      description: 'Free pancakes and bacon to fuel your late night study session.',
+      title: 'Bomber Wednesday: Winter Edition',
+      date: 'Jan 08',
+      time: '8:00 PM - 12:00 AM',
+      location: 'The Bomber',
+      description: 'Weekly campus pub night. 19+ with valid WatCard.',
+      category: 'Social'
+    },
+    {
+      id: 'uw4',
+      title: 'Grad Writing Café',
+      date: 'Jan 09',
+      time: '1:00 PM - 4:00 PM',
+      location: 'Dana Porter Library',
+      description: 'Drop-in writing support for graduate students.',
+      category: 'Academic'
+    },
+    {
+      id: 'uw5',
+      title: 'Wellness Week: Yoga & Meditation',
+      date: 'Jan 13',
+      time: '6:00 PM - 7:00 PM',
+      location: 'PAC Multi-Purpose Room',
+      description: 'Free yoga and meditation session to de-stress.',
       category: 'Wellness'
+    },
+    {
+      id: 'uw6',
+      title: 'Velocity Innovation Open House',
+      date: 'Jan 14',
+      time: '5:00 PM - 7:00 PM',
+      location: 'Velocity Garage',
+      description: 'Learn about startup incubator programs and meet founders.',
+      category: 'Career'
+    },
+    {
+      id: 'uw7',
+      title: 'International Student Mixer',
+      date: 'Jan 15',
+      time: '7:00 PM - 9:00 PM',
+      location: 'SLC Multi-Purpose Room',
+      description: 'Meet international students from around the world.',
+      category: 'Social'
+    },
+    {
+      id: 'uw8',
+      title: 'Tech Interview Prep Session',
+      date: 'Jan 16',
+      time: '6:00 PM - 8:00 PM',
+      location: 'Davis Centre (DC 1302)',
+      description: 'Practice coding interviews and get tips from upper-years.',
+      category: 'Career'
     }
   ],
   multiFaithSpaces: [
     {
       id: 'uw-mf-1',
-      name: 'SLC Multi-Faith Prayer Room',
-      location: 'SLC 3rd Floor',
-      description: 'A quiet, carpeted space available for individual prayer and meditation for students of all faiths.',
-      amenities: ['Shoe racks', 'Prayer mats', 'Dividers available'],
-      hours: '24/7 (with WatCard access)'
+      name: 'SLC Multi-Faith Room',
+      location: 'SLC 3109 (3rd Floor)',
+      description: 'Main multi-faith space open to all students for prayer and meditation. Capacity ~100 people.',
+      amenities: ['Prayer mats', 'Shoe racks', 'Dividers', 'Ablution facilities nearby'],
+      hours: '5:00 AM - 12:00 AM'
     },
     {
       id: 'uw-mf-2',
-      name: 'Wudhu Stations',
-      location: 'SLC 3rd Floor Washrooms',
-      description: 'Dedicated ablution stations located adjacent to the prayer room.',
-      amenities: ['Foot wash stations', 'Seating'],
-      hours: '24/7'
+      name: 'Davis Centre Prayer Space',
+      location: 'DC 3578 (3rd Floor)',
+      description: 'Quiet prayer space for engineering and math students. Door code: 338822.',
+      amenities: ['Prayer mats', 'Quiet zone'],
+      hours: 'Building hours'
     },
     {
       id: 'uw-mf-3',
-      name: 'Chaplains Offices',
-      location: 'Various Colleges (St. Jerome\'s, Conrad Grebel, etc.)',
-      description: 'Offices for university chaplains offering spiritual support and guidance.',
-      amenities: ['Counselling', 'Private discussion'],
-      hours: '9:00 AM - 5:00 PM'
+      name: 'Dana Porter Reflection Room',
+      location: 'DP 702 (7th Floor)',
+      description: 'Carpeted space for reflection, prayer, relaxation and de-stressing.',
+      amenities: ['Mats', 'Chairs', 'Cushions', 'Natural light'],
+      hours: 'Library hours'
+    },
+    {
+      id: 'uw-mf-4',
+      name: 'The Sanctuary (B.C. Matthews Hall)',
+      location: 'BMH 3023',
+      description: 'Small intimate prayer space near the School of Pharmacy.',
+      amenities: ['Prayer mats available'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'uw-mf-5',
+      name: 'Renison Multi-Faith Space',
+      location: 'REN 0103',
+      description: 'Multi-faith prayer space at Renison University College. Capacity ~12.',
+      amenities: ['Prayer mats', 'Quiet environment'],
+      hours: 'Daily during college hours'
     }
   ]
 };
@@ -153,39 +214,99 @@ export const DATA_UOFT: CampusData = {
   events: [
     {
       id: 'uoft1',
-      title: 'Hart House Jazz Night',
-      date: 'Friday',
-      time: '8:00 PM',
-      location: 'Arbor Room',
-      description: 'Live jazz performances by students and local artists. Free entry.',
+      title: 'Winter Welcome Back BBQ',
+      date: 'Jan 06',
+      time: '11:00 AM - 2:00 PM',
+      location: 'Sidney Smith Courtyard',
+      description: 'Free lunch and meet fellow students to start the winter semester.',
       category: 'Social'
     },
     {
       id: 'uoft2',
-      title: 'Exam Destressor with Puppies',
-      date: 'Monday',
+      title: 'Academic Success Workshop',
+      date: 'Jan 08',
+      time: '3:00 PM - 4:30 PM',
+      location: 'Robarts Library, 4th Floor',
+      description: 'Learn time management and study strategies for the new term.',
+      category: 'Academic'
+    },
+    {
+      id: 'uoft3',
+      title: 'Hart House Jazz Night',
+      date: 'Jan 10',
+      time: '8:00 PM - 10:00 PM',
+      location: 'Hart House Arbor Room',
+      description: 'Live jazz performances by students and local artists. Free entry.',
+      category: 'Social'
+    },
+    {
+      id: 'uoft4',
+      title: 'Career Centre Drop-In Hours',
+      date: 'Jan 13',
+      time: '1:00 PM - 4:00 PM',
+      location: 'Koffler Student Services',
+      description: 'Get help with resumes, cover letters, and job applications.',
+      category: 'Career'
+    },
+    {
+      id: 'uoft5',
+      title: 'Wellness Wednesday: Therapy Dogs',
+      date: 'Jan 15',
       time: '12:00 PM - 2:00 PM',
       location: 'Sidney Smith Lobby',
-      description: 'Therapy dogs visiting campus to help you relax before midterms.',
+      description: 'Therapy dogs visiting campus to help you de-stress.',
       category: 'Wellness'
+    },
+    {
+      id: 'uoft6',
+      title: 'Rotman Career Fair',
+      date: 'Jan 17',
+      time: '10:00 AM - 3:00 PM',
+      location: 'Rotman School of Management',
+      description: 'Network with top employers in finance, consulting, and tech.',
+      category: 'Career'
     }
   ],
   multiFaithSpaces: [
     {
       id: 'uoft-mf-1',
       name: 'Multi-Faith Centre',
-      location: 'Koffler House (569 Spadina Ave)',
-      description: 'The main hub for spiritual practice, including prayer rooms, meditation spaces, and events.',
-      amenities: ['Main Activity Hall', 'Quiet Room', 'Ablution facilities', 'Kitchen'],
-      hours: '9:00 AM - 10:00 PM'
+      location: '569 Spadina Crescent (Koffler House)',
+      description: 'The main hub for spiritual practice at UofT. Offers prayer rooms, meditation spaces, workshops, and interfaith programs.',
+      amenities: ['Main Activity Hall', 'Quiet Room', 'Ablution facilities', 'Kitchen', 'Resource Library'],
+      hours: 'Mon-Fri 8:45 AM - 5:00 PM'
     },
     {
       id: 'uoft-mf-2',
       name: 'Bahen Centre Prayer Space',
       location: 'Bahen Centre, Room 2270',
-      description: 'A quiet reflection room commonly used for daily prayers.',
-      amenities: ['Carpeted floor'],
-      hours: 'Open during building hours'
+      description: 'A quiet reflection room commonly used for daily prayers by computer science students.',
+      amenities: ['Carpeted floor', 'Quiet zone'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'uoft-mf-3',
+      name: 'Robarts Library Quiet Floor',
+      location: 'Robarts Library, 13th Floor',
+      description: 'Silent study floor often used for quiet reflection and meditation.',
+      amenities: ['Silent zone', 'Natural light', 'Study carrels'],
+      hours: 'Library hours'
+    },
+    {
+      id: 'uoft-mf-4',
+      name: 'Hart House Chapel',
+      location: 'Hart House, Main Floor',
+      description: 'Historic chapel space available for quiet contemplation and spiritual gatherings.',
+      amenities: ['Pews', 'Historic architecture', 'Organ'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'uoft-mf-5',
+      name: 'Gerstein Science Meditation Room',
+      location: 'Gerstein Library, Lower Level',
+      description: 'Quiet space for science students seeking a moment of peace between classes.',
+      amenities: ['Cushions', 'Quiet environment'],
+      hours: 'Library hours'
     }
   ]
 };
@@ -232,48 +353,99 @@ export const DATA_MAC: CampusData = {
   events: [
     {
       id: 'mac1',
-      title: 'Marauders Football Game',
-      date: 'Saturday',
-      time: '1:00 PM',
-      location: 'Ron Joyce Stadium',
-      description: 'Cheer on the team! Students get in free with ID.',
-      category: 'Social'
+      title: 'New Year Study Skills Workshop',
+      date: 'Jan 07',
+      time: '5:00 PM - 6:30 PM',
+      location: 'Mills Library Learning Commons',
+      description: 'Start the term strong with effective study techniques.',
+      category: 'Academic'
     },
     {
       id: 'mac2',
-      title: 'Hiking Cootes Paradise',
-      date: 'Sunday',
-      time: '10:00 AM',
-      location: 'Meet at MUSC',
-      description: 'Group hike organized by the Outdoor Club. Bring water.',
-      category: 'Wellness'
+      title: 'Wednesday Night at Quarters',
+      date: 'Jan 08',
+      time: '9:00 PM - 1:00 AM',
+      location: 'Quarters (MUSC)',
+      description: 'Student bar night with drink specials. 19+ with ID.',
+      category: 'Social'
     },
     {
       id: 'mac3',
+      title: 'Cootes Paradise Winter Hike',
+      date: 'Jan 11',
+      time: '10:00 AM - 12:00 PM',
+      location: 'Meet at MUSC entrance',
+      description: 'Group hike through snowy trails. Bring warm clothes!',
+      category: 'Wellness'
+    },
+    {
+      id: 'mac4',
       title: 'Chemistry Help Session',
-      date: 'Tuesday',
-      time: '6:00 PM',
+      date: 'Jan 14',
+      time: '6:00 PM - 8:00 PM',
       location: 'Burke Science Building',
-      description: 'Drop-in help for CHEM 1A03.',
+      description: 'Drop-in help for CHEM 1A03 and 1AA3.',
       category: 'Academic'
+    },
+    {
+      id: 'mac5',
+      title: 'Marauders Basketball Game',
+      date: 'Jan 17',
+      time: '7:00 PM',
+      location: 'Burridge Gymnasium',
+      description: 'Cheer on the Marauders! Free entry with student ID.',
+      category: 'Social'
+    },
+    {
+      id: 'mac6',
+      title: 'Resume & LinkedIn Workshop',
+      date: 'Jan 19',
+      time: '2:00 PM - 4:00 PM',
+      location: 'Gilmour Hall 110',
+      description: 'Build your professional profile for summer opportunities.',
+      category: 'Career'
     }
   ],
   multiFaithSpaces: [
     {
       id: 'mac-mf-1',
-      name: 'Spiritual Care and Learning Centre',
+      name: 'Spiritual Care and Learning Centre (SCLC)',
       location: 'MUSC 212',
-      description: 'A welcoming space for students of all backgrounds to practice their faith or seek spiritual support.',
-      amenities: ['Prayer mats', 'Meditation cushions', 'Ablution room nearby'],
-      hours: '9:00 AM - 5:00 PM (Mon-Fri)'
+      description: 'Main multi-faith hub with prayer space, spiritual guidance, and community lounge with halal/kosher treats.',
+      amenities: ['Prayer mats', 'Meditation cushions', 'Lounge', 'Herbal teas', 'Ablution room'],
+      hours: 'Office: 10 AM - 4 PM, Prayer: 10:30 AM - 8 PM'
     },
     {
       id: 'mac-mf-2',
-      name: 'MDCL Prayer Room',
-      location: 'Michael DeGroote Centre for Learning, Room 3018',
-      description: 'Quiet space designated for prayer and reflection.',
-      amenities: ['Quiet zone'],
-      hours: 'Building hours'
+      name: 'Mills Library Prayer Space',
+      location: 'Mills Library, 2nd Floor Prayer Corner',
+      description: 'Quiet prayer area in the main library for students between study sessions.',
+      amenities: ['Prayer mats', 'Quiet zone'],
+      hours: 'Library hours'
+    },
+    {
+      id: 'mac-mf-3',
+      name: 'Thode Library Prayer Space',
+      location: 'Thode Library, Room B117A',
+      description: 'Prayer space for science and engineering students near Thode Library.',
+      amenities: ['Prayer mats', 'Quiet environment'],
+      hours: '24/7 during exams'
+    },
+    {
+      id: 'mac-mf-4',
+      name: 'MDCL Prayer Rooms',
+      location: 'Michael DeGroote Centre, Rooms 2242/2246/2249',
+      description: 'Multiple prayer rooms in the medical building for health sciences students.',
+      amenities: ['Prayer mats', 'Ablution nearby'],
+      hours: 'Building hours (varies)'
+    },
+    {
+      id: 'mac-mf-5',
+      name: "McMaster Children's Hospital Chapel",
+      location: "McMaster Children's Hospital, 2nd Floor",
+      description: 'Interfaith chapel space available 24/7 for prayer and quiet reflection.',
+      amenities: ['Pews', 'Quiet atmosphere', 'Accessible'],
+      hours: '24/7'
     }
   ]
 };
@@ -322,31 +494,90 @@ export const DATA_WESTERN: CampusData = {
   events: [
     {
       id: 'uwo1',
-      title: 'Homecoming Football',
-      date: 'Saturday',
-      time: '1:00 PM',
-      location: 'TD Stadium',
-      description: 'Wear purple and cheer on the Mustangs!',
+      title: 'Winter Orientation Week Events',
+      date: 'Jan 05',
+      time: '10:00 AM - 5:00 PM',
+      location: 'UCC Atrium',
+      description: 'Activities for new and returning students to start the term.',
       category: 'Social'
     },
     {
       id: 'uwo2',
-      title: 'Late Night Breakfast',
-      date: 'Thursday',
-      time: '10:00 PM',
-      location: 'UCC Atrium',
-      description: 'Free breakfast food during exam season.',
+      title: 'Study Skills Seminar',
+      date: 'Jan 09',
+      time: '4:00 PM - 5:30 PM',
+      location: 'Weldon Library Room 2E',
+      description: 'Master effective note-taking and exam prep strategies.',
+      category: 'Academic'
+    },
+    {
+      id: 'uwo3',
+      title: 'Thursday Night at The Spoke',
+      date: 'Jan 16',
+      time: '10:00 PM - 2:00 AM',
+      location: 'The Spoke (UCC)',
+      description: 'Weekly student pub night. Great bagels and vibes!',
+      category: 'Social'
+    },
+    {
+      id: 'uwo4',
+      title: 'Career Services: Internship Fair',
+      date: 'Jan 18',
+      time: '11:00 AM - 3:00 PM',
+      location: 'WSRC Fieldhouse',
+      description: 'Meet employers looking for summer interns.',
+      category: 'Career'
+    },
+    {
+      id: 'uwo5',
+      title: 'Mindfulness & Meditation',
+      date: 'Jan 19',
+      time: '6:00 PM - 7:00 PM',
+      location: 'WSRC Studio A',
+      description: 'Free guided meditation to reduce winter stress.',
       category: 'Wellness'
     }
   ],
   multiFaithSpaces: [
     {
       id: 'uwo-mf-1',
-      name: 'Multi-Faith Space',
-      location: 'UCC Room 2200',
-      description: 'A dedicated space for prayer, meditation, and reflection for the Western community.',
+      name: 'UCC Multi-Faith Space',
+      location: 'UCC Room 38B',
+      description: 'Bookable multi-faith space for spiritual gatherings. Max 40 people. Reserve 3+ days in advance.',
       amenities: ['Prayer mats', 'Shoe racks', 'Ablution stations nearby'],
-      hours: '9:00 AM - 9:00 PM'
+      hours: 'UCC hours (reservations required)'
+    },
+    {
+      id: 'uwo-mf-2',
+      name: 'Middlesex College Prayer Room',
+      location: 'Middlesex College, Room 15A',
+      description: 'Drop-in multi-faith space. Access code: 1234*',
+      amenities: ['Prayer mats', 'Quiet zone'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'uwo-mf-3',
+      name: 'Thames Hall Prayer Room',
+      location: 'Thames Hall, Room 3186',
+      description: 'Drop-in prayer space near business buildings. Access code: 3636*',
+      amenities: ['Prayer mats', 'Dividers'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'uwo-mf-4',
+      name: 'Health Sciences Building Prayer Room',
+      location: 'Health Science Building, Room 409',
+      description: 'Unlocked prayer room for health sciences students.',
+      amenities: ['Prayer mats', 'Quiet environment'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'uwo-mf-5',
+      name: "King's College Reflection Room",
+      location: "King's College, Room 219",
+      description: 'Peaceful reflection space at King\'s University College.',
+      amenities: ['Quiet zone', 'Natural light'],
+      hours: 'Contact conferenceservices@kings.uwo.ca'
     }
   ]
 };
@@ -392,39 +623,90 @@ export const DATA_QUEENS: CampusData = {
   events: [
     {
       id: 'queens1',
-      title: 'Tricolour Open House',
-      date: 'Sept 08',
-      time: '10:00 AM - 4:00 PM',
+      title: 'Winter Clubs Fair',
+      date: 'Jan 08',
+      time: '11:00 AM - 3:00 PM',
       location: 'ARC Main Gym',
-      description: 'Explore over 300 student clubs and organizations.',
+      description: 'Explore student clubs and find your community.',
       category: 'Social'
     },
     {
       id: 'queens2',
-      title: 'Common Ground Coffee House Music Night',
-      date: 'Wednesday',
-      time: '7:00 PM',
+      title: 'Common Ground Coffee House',
+      date: 'Jan 10',
+      time: '7:00 PM - 9:00 PM',
       location: 'CoGro (Mitchell Hall)',
-      description: 'Live acoustic music and great coffee.',
+      description: 'Live acoustic music and great coffee to start the term.',
       category: 'Social'
+    },
+    {
+      id: 'queens3',
+      title: 'Writing Centre Workshop',
+      date: 'Jan 13',
+      time: '3:00 PM - 4:30 PM',
+      location: 'Stauffer Library',
+      description: 'Improve your academic writing skills.',
+      category: 'Academic'
+    },
+    {
+      id: 'queens4',
+      title: 'Career Services: Resume Workshop',
+      date: 'Jan 16',
+      time: '5:00 PM - 6:30 PM',
+      location: 'Gordon Hall',
+      description: 'Build a strong resume for co-op and summer positions.',
+      category: 'Career'
+    },
+    {
+      id: 'queens5',
+      title: 'Wellness Wednesday: Yoga',
+      date: 'Jan 15',
+      time: '12:00 PM - 1:00 PM',
+      location: 'ARC Studio',
+      description: 'Free yoga class for all skill levels.',
+      category: 'Wellness'
     }
   ],
   multiFaithSpaces: [
     {
       id: 'queens-mf-1',
       name: 'Interfaith Room',
-      location: 'Mitchell Hall, Room 215',
-      description: 'A quiet space designed for prayer, meditation, and reflection.',
-      amenities: ['Prayer rugs', 'Meditation cushions'],
-      hours: '8:00 AM - 8:00 PM'
+      location: 'Mitchell Hall, Room 210',
+      description: 'Main multi-faith space managed by Faith and Spiritual Life office. Open for prayer, meditation, and reflection.',
+      amenities: ['Prayer rugs', 'Meditation cushions', 'Quiet zone'],
+      hours: 'Building hours (bookable through Chaplain\'s Office)'
     },
     {
       id: 'queens-mf-2',
+      name: 'Kolias Family Prayer & Meditation Room',
+      location: 'Goodes Hall, Room LL109',
+      description: 'Prayer and meditation room in the business school building.',
+      amenities: ['Prayer mats', 'Quiet environment'],
+      hours: 'Business hours'
+    },
+    {
+      id: 'queens-mf-3',
+      name: 'Stauffer Library Prayer Room',
+      location: 'Stauffer Library, 2nd Floor',
+      description: 'Prayer and meditation room in the main library.',
+      amenities: ['Prayer mats', 'Quiet zone'],
+      hours: 'Library hours'
+    },
+    {
+      id: 'queens-mf-4',
+      name: 'School of Medicine Prayer Room',
+      location: 'School of Medicine, Room LL011',
+      description: 'Prayer and meditation space for health sciences students.',
+      amenities: ['Prayer mats', 'Quiet environment'],
+      hours: '7:30 AM - 5:30 PM'
+    },
+    {
+      id: 'queens-mf-5',
       name: 'Morgan Memorial Chapel',
-      location: 'Theological Hall',
-      description: 'A historic chapel space available for quiet contemplation and services.',
-      amenities: ['Pews', 'Organ'],
-      hours: 'By appointment or scheduled service'
+      location: 'Theological Hall, 2nd Floor',
+      description: 'Historic chapel space for quiet contemplation. Bookable for ceremonies through the Chaplain\'s Office.',
+      amenities: ['Pews', 'Organ', 'Historic architecture'],
+      hours: 'Building hours'
     }
   ]
 };
@@ -470,39 +752,99 @@ export const DATA_TMU: CampusData = {
   events: [
     {
       id: 'tmu1',
-      title: 'Week of Welcome Concert',
-      date: 'Friday',
-      time: '6:00 PM',
+      title: 'Winter Welcome Week Kickoff',
+      date: 'Jan 06',
+      time: '12:00 PM - 4:00 PM',
       location: 'Kerr Hall Quad',
-      description: 'Outdoor concert to kick off the semester.',
+      description: 'Free food, music, and activities to start the semester.',
       category: 'Social'
     },
     {
       id: 'tmu2',
-      title: 'Career Fair',
-      date: 'Tuesday',
+      title: 'Study Smart Workshop',
+      date: 'Jan 09',
+      time: '2:00 PM - 3:30 PM',
+      location: 'SLC Beach (6th Floor)',
+      description: 'Learn effective study habits for the new term.',
+      category: 'Academic'
+    },
+    {
+      id: 'tmu3',
+      title: 'Downtown Toronto Career Fair',
+      date: 'Jan 14',
       time: '10:00 AM - 3:00 PM',
       location: 'MAC Arena',
-      description: 'Meet top employers from downtown Toronto.',
+      description: 'Meet top employers from the Toronto area.',
       category: 'Career'
+    },
+    {
+      id: 'tmu4',
+      title: 'Creative Writing Workshop',
+      date: 'Jan 15',
+      time: '5:00 PM - 6:30 PM',
+      location: 'SLC Room 302',
+      description: 'Develop your creative writing skills with peer feedback.',
+      category: 'Academic'
+    },
+    {
+      id: 'tmu5',
+      title: 'Wellness Drop-In: Mindfulness',
+      date: 'Jan 17',
+      time: '12:00 PM - 1:00 PM',
+      location: 'SLC Reflection Room',
+      description: 'Practice mindfulness techniques to manage stress.',
+      category: 'Wellness'
+    },
+    {
+      id: 'tmu6',
+      title: 'Friday Night Concert Series',
+      date: 'Jan 17',
+      time: '7:00 PM - 10:00 PM',
+      location: 'Kerr Hall Quad',
+      description: 'Live performances from student bands and local artists.',
+      category: 'Social'
     }
   ],
   multiFaithSpaces: [
     {
       id: 'tmu-mf-1',
-      name: 'Multi-Faith Room',
-      location: 'SCC-321 (Student Campus Centre)',
-      description: 'Space provided by the RSU for prayer and reflection.',
-      amenities: ['Ablution facilities nearby', 'Dividers'],
-      hours: '9:00 AM - 6:00 PM'
+      name: 'SCC Multi-Faith Room',
+      location: 'Oakham House, Room OAK-319 (55 Gould St)',
+      description: 'Main multi-faith space for prayer, worship, meditation, and spiritual activities. Drop-in basis for all faiths.',
+      amenities: ['Prayer mats', 'Dividers', 'Ablution facilities nearby'],
+      hours: 'Posted on door'
     },
     {
       id: 'tmu-mf-2',
-      name: 'Reflection Room',
-      location: 'SLC 4th Floor',
-      description: 'A quiet space intended for individual silent prayer or meditation.',
-      amenities: ['Cushions', 'Natural Light'],
-      hours: 'Same as SLC hours'
+      name: 'TRS EDI Well-being Space',
+      location: 'Ted Rogers School, TRS 1-045 (7th Floor, 55 Dundas St W)',
+      description: 'Well-being space for prayer, meditation, reflection, or quiet time. Open to all TMU community members.',
+      amenities: ['Prayer mats', 'Quiet environment', 'Accessible'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'tmu-mf-3',
+      name: 'SLC Reflection Room',
+      location: 'Student Learning Centre, 4th Floor',
+      description: 'Quiet space for individual silent prayer or meditation with natural light.',
+      amenities: ['Cushions', 'Natural light', 'Quiet zone'],
+      hours: '6:00 AM - 1:00 AM'
+    },
+    {
+      id: 'tmu-mf-4',
+      name: 'Kerr Hall Quiet Space',
+      location: 'Kerr Hall, Lower Level',
+      description: 'Informal quiet space near the quad for brief reflection.',
+      amenities: ['Seating', 'Accessible'],
+      hours: 'Building hours'
+    },
+    {
+      id: 'tmu-mf-5',
+      name: 'CUI Meeting Room (Bookable)',
+      location: 'Centre for Urban Innovation',
+      description: 'Bookable meeting room that can be used for brief private prayer or meditation when available.',
+      amenities: ['Private space', 'Table/chairs'],
+      hours: 'By reservation'
     }
   ]
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { UNIVERSITIES, DEFAULT_UNIVERSITY_ID, USE_BACKEND, INITIAL_BADGES } from './constants';
-import { Message, Sender, UserStats, ChatSession } from './types';
+import { Message, Sender, UserStats, ChatSession, CampusEvent } from './types';
 import { generateResponse } from './services/geminiService';
 import { getUserStats, processUserInteraction, generateUserContextSummary } from './services/statsService';
 import { getChatSessions, createChatSession, addMessage, deleteChatSession } from './services/chatService';
