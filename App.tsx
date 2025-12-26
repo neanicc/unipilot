@@ -366,7 +366,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden relative bg-black text-white">
+    <div className="flex flex-col h-screen overflow-hidden relative bg-black text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
       {/* Aurora Background */}
       <Aurora
         colorStops={currentUniversity.auroraColors}
@@ -404,10 +404,10 @@ const App: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 p-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 shadow-lg">
+            <div className="flex items-center gap-1 p-1.5 rounded-md bg-white/15 backdrop-blur-md border border-white/25 shadow-lg">
               <button
                 onClick={() => setIsAboutOpen(true)}
-                className="p-2 rounded-full transition-all text-white/80 hover:text-white hover:bg-white/20"
+                className="p-2 rounded-md transition-all text-white/80 hover:text-white hover:bg-white/20"
                 title="About"
               >
                 <Info size={18} />
@@ -415,10 +415,13 @@ const App: React.FC = () => {
 
               <div className="w-px h-5 mx-1 bg-white/25"></div>
 
-              <div className="relative">
+              <div className="relative" onClick={(e) => e.stopPropagation()}>
                 <button
-                  onClick={() => setIsHistoryOpen(!isHistoryOpen)}
-                  className={`flex items-center gap-1 px-3 py-2 rounded-full transition-all ${isHistoryOpen 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsHistoryOpen(!isHistoryOpen);
+                  }}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-md transition-all ${isHistoryOpen 
                     ? 'bg-white/25 text-white shadow-sm'
                     : 'text-white/80 hover:text-white hover:bg-white/20'
                   }`}
@@ -430,11 +433,17 @@ const App: React.FC = () => {
                 </button>
 
                 {isHistoryOpen && (
-                  <div className="absolute top-full right-0 mt-3 w-64 bg-black/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                  <div 
+                    className="absolute top-full right-0 mt-3 w-64 bg-black/95 backdrop-blur-xl rounded-md shadow-xl border border-white/20 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+                    style={{ zIndex: 9999 }}
+                  >
                     <div className="p-2 border-b border-white/10">
                       <button
-                        onClick={handleNewChat}
-                        className="w-full flex items-center gap-2 px-3 py-2 bg-white/20 text-white rounded-full hover:bg-white/30 transition-colors text-sm font-medium backdrop-blur-md"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNewChat();
+                        }}
+                        className="w-full flex items-center gap-2 px-3 py-2 bg-white/20 text-white rounded-md hover:bg-white/30 transition-colors text-sm font-medium backdrop-blur-md"
                       >
                         <Plus size={16} />
                         New Chat
@@ -450,7 +459,10 @@ const App: React.FC = () => {
                         filteredSessions.map(session => (
                           <div
                             key={session.id}
-                            onClick={() => handleLoadSession(session)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleLoadSession(session);
+                            }}
                             className={`group flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-white/10 transition-colors ${currentSessionId === session.id ? 'bg-white/15 border-l-2 border-white pl-[10px]' : 'pl-3'}`}
                           >
                             <div className="overflow-hidden">
@@ -461,7 +473,7 @@ const App: React.FC = () => {
                             </div>
                             <button
                               onClick={(e) => handleDeleteSession(e, session.id)}
-                              className="p-1.5 text-white/30 hover:text-red-400 hover:bg-red-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+                              className="p-1.5 text-white/30 hover:text-red-400 hover:bg-red-500/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
                             >
                               <Trash2 size={14} />
                             </button>
@@ -476,7 +488,7 @@ const App: React.FC = () => {
 
             <button
               onClick={() => setIsStatsOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 rounded-full transition-colors shadow-lg"
+              className="flex items-center gap-2 px-4 py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 rounded-md transition-colors shadow-lg"
             >
               <Trophy size={16} className="text-yellow-400" />
               <span className="text-sm font-semibold text-white">Lvl {userStats.level}</span>
@@ -584,15 +596,15 @@ const App: React.FC = () => {
       </main>
 
       {activeTab === 'chat' && (
-        <footer className="flex-none p-4 backdrop-blur-md bg-black/40 absolute bottom-0 w-full z-20 animate-in slide-in-from-bottom-2">
+        <footer className="flex-none p-4 bg-gradient-to-t from-black/40 to-transparent absolute bottom-0 w-full z-20 animate-in slide-in-from-bottom-2">
           <div className="max-w-3xl mx-auto">
             {messages.length < 3 && (
-              <div className="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-hide">
+              <div className="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-hide pl-14">
                 {quickPrompts.map((prompt, i) => (
                   <button
                     key={i}
                     onClick={() => setInput(prompt)}
-                    className="whitespace-nowrap px-4 py-2 text-xs font-semibold rounded-full transition-colors bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 shadow-lg"
+                    className="whitespace-nowrap px-4 py-2 text-xs font-semibold rounded-md transition-colors bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 shadow-lg"
                   >
                     {prompt}
                   </button>
@@ -600,11 +612,11 @@ const App: React.FC = () => {
               </div>
             )}
 
-            <div className="relative flex items-end gap-2">
+            <div className="relative flex items-center gap-2">
               <button
-                onClick={handleNewChat}
-                title="Reset / New Chat"
-                className="p-3 rounded-full transition-colors text-white/70 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20"
+                onClick={() => setInput('')}
+                title="Clear Input"
+                className="p-3 rounded-md transition-colors text-white/70 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20"
               >
                 <Trash2 size={20} />
               </button>
@@ -617,14 +629,14 @@ const App: React.FC = () => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={`Ask ${currentUniversity.personaName} a question...`}
-                  className="w-full pl-5 pr-14 py-4 border border-white/30 focus:ring-0 focus:border-white/50 rounded-full shadow-lg transition-all bg-white/15 backdrop-blur-xl text-white placeholder-white/50 font-medium"
+                  className="w-full pl-5 pr-14 py-3 border border-white/30 focus:ring-0 focus:border-white/50 rounded-md shadow-lg transition-all bg-white/15 backdrop-blur-xl text-white placeholder-white/50 font-medium"
                   disabled={isLoading}
                 />
-                <div className="absolute right-2 bottom-2">
+                <div className="absolute right-1.5 top-1/2 -translate-y-1/2">
                   <button
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
-                    className={`p-2.5 rounded-full transition-all transform active:scale-95 shadow-lg ${input.trim() && !isLoading
+                    className={`p-2 rounded-md transition-all transform active:scale-95 shadow-lg ${input.trim() && !isLoading
                       ? 'bg-white/90 text-black hover:bg-white'
                       : 'bg-white/20 text-white/40 cursor-not-allowed backdrop-blur-md'
                     }`}

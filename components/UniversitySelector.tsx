@@ -31,11 +31,18 @@ const UniversityLogo: React.FC<{ uni: UniversityProfile; size?: number }> = ({ u
 const UniversitySelector: React.FC<Props> = ({ universities, selectedId, onSelect, isOpen, setIsOpen }) => {
   const selectedUni = universities.find(u => u.id === selectedId) || universities[0];
 
+  const handleDropdownClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="relative">
+    <div className="relative" onClick={handleDropdownClick}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-4 py-2 rounded-full shadow-lg transition-colors bg-white/15 backdrop-blur-md border border-white/25 hover:bg-white/25"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
+        className="flex items-center space-x-2 px-4 py-2 rounded-md shadow-lg transition-colors bg-white/15 backdrop-blur-md border border-white/25 hover:bg-white/25"
       >
         <UniversityLogo uni={selectedUni} size={24} />
         <span className="font-semibold text-white">{selectedUni.shortName}</span>
@@ -43,12 +50,16 @@ const UniversitySelector: React.FC<Props> = ({ universities, selectedId, onSelec
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-64 rounded-2xl shadow-xl border z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 bg-black/90 backdrop-blur-xl border-white/25">
+        <div 
+          className="absolute top-full right-0 mt-2 w-64 rounded-md shadow-xl border overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 bg-black/95 backdrop-blur-xl border-white/25"
+          style={{ zIndex: 9999 }}
+        >
           <div className="py-2">
             {universities.map((uni) => (
               <button
                 key={uni.id}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   onSelect(uni.id);
                   setIsOpen(false);
                 }}

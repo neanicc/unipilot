@@ -55,7 +55,7 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4 relative">
+    <div className="min-h-screen flex items-center justify-center bg-black p-4 relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>
       {/* Aurora Background */}
       <Aurora
         colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}

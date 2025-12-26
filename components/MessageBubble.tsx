@@ -47,7 +47,7 @@ const MessageBubble: React.FC<Props> = ({ message, university }) => {
       <div className={`flex max-w-[95%] md:max-w-[80%] ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start gap-3`}>
         
         {/* Avatar */}
-        <div className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center shadow-lg ${
+        <div className={`flex-shrink-0 w-9 h-9 rounded-md flex items-center justify-center shadow-lg ${
           isUser 
             ? 'bg-white/25 backdrop-blur-md border border-white/30'
             : getThemeColor(university.themeColor) + ' text-white'
@@ -58,16 +58,16 @@ const MessageBubble: React.FC<Props> = ({ message, university }) => {
         {/* Content Container */}
         <div className={`flex flex-col space-y-2 w-full`}>
             {/* Bubble */}
-            <div className={`px-5 py-4 rounded-2xl shadow-lg ${
+            <div className={`px-5 py-4 rounded-md shadow-lg ${
             isUser 
-                ? 'bg-white/20 backdrop-blur-md border border-white/25 text-white'
-                : 'bg-black/50 backdrop-blur-xl border border-white/20 text-white'
+                ? 'bg-white/25 backdrop-blur-md border border-white/30 text-white'
+                : 'bg-black/70 backdrop-blur-xl border border-white/25 text-white'
             }`}>
             {isUser ? (
-                <p className="text-sm">{message.text}</p>
+                <p className="text-sm text-white font-medium">{message.text}</p>
             ) : (
-                <div>
-                    <p className="text-xs font-bold mb-1 uppercase tracking-wide text-white/60">{university.personaName}</p>
+                <div className="text-white">
+                    <p className="text-xs font-bold mb-2 uppercase tracking-wide text-white/80">{university.personaName}</p>
                     <MarkdownRenderer content={message.text} />
                 </div>
             )}
