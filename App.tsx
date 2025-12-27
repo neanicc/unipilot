@@ -411,7 +411,7 @@ const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-16'}`}>
         
         {notification && (
           <div className={`absolute top-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-md shadow-lg z-50 animate-in slide-in-from-top-5 fade-in flex items-center gap-2 font-bold ${notification.type === 'achievement' ? 'bg-yellow-500/90 text-white' :
@@ -510,19 +510,19 @@ const App: React.FC = () => {
       {activeTab === 'chat' && (
         <footer className="flex-none p-4 bg-gradient-to-t from-black/40 to-transparent z-20 animate-in slide-in-from-bottom-2">
           <div className="max-w-3xl mx-auto">
-            {messages.length < 3 && (
-              <div className="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-hide pl-14">
-                {quickPrompts.map((prompt, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setInput(prompt)}
-                    className="whitespace-nowrap px-4 py-2 text-xs font-semibold rounded-md transition-colors bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 shadow-lg"
-                  >
-                    {prompt}
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* Always show suggested prompts */}
+            <div className="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-hide">
+              {quickPrompts.map((prompt, i) => (
+                <button
+                  key={i}
+                  onClick={() => setInput(prompt)}
+                  className="whitespace-nowrap px-4 py-2 text-xs font-semibold rounded-md transition-colors bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 shadow-lg"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+
 
             <div className="relative flex items-center gap-2">
               <button
