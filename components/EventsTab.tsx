@@ -4,6 +4,7 @@ import { CampusEvent, UniversityProfile } from '../types';
 import { Calendar, MapPin, Clock, Sparkles } from 'lucide-react';
 import { generateEventSummary } from '../services/geminiService';
 import MarkdownRenderer from './MarkdownRenderer';
+import GlareHover from './GlareHover';
 
 interface Props {
   events: CampusEvent[];
@@ -39,11 +40,11 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'Career': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'Social': return 'bg-amber-100 text-amber-800 border-amber-200';
-      case 'Wellness': return 'bg-green-100 text-green-800 border-green-200';
-      case 'Academic': return 'bg-purple-100 text-purple-800 border-purple-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'Career': return 'bg-blue-500/30 text-blue-300 border-blue-400/30';
+      case 'Social': return 'bg-amber-500/30 text-amber-300 border-amber-400/30';
+      case 'Wellness': return 'bg-green-500/30 text-green-300 border-green-400/30';
+      case 'Academic': return 'bg-purple-500/30 text-purple-300 border-purple-400/30';
+      default: return 'bg-white/20 text-white/80 border-white/30';
     }
   };
 
@@ -52,25 +53,25 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
 
       {/* Header Section */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <Calendar className={`text-${university.themeColor}`} />
+        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <Calendar className="text-purple-400" />
           Upcoming Events
         </h2>
-        <p className="text-gray-500 text-sm mt-1">Don't miss out on what's happening at {university.shortName}.</p>
+        <p className="text-white/60 text-sm mt-1">Don't miss out on what's happening at {university.shortName}.</p>
       </div>
 
       {/* AI Summary Section */}
-      <div className="mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 p-1 rounded-2xl border border-indigo-100 shadow-sm">
-        <div className="bg-white/60 backdrop-blur-sm p-5 rounded-xl">
+      <div className="mb-8 bg-black/50 backdrop-blur-md p-1 rounded-md border border-white/20 shadow-lg">
+        <div className="bg-white/5 backdrop-blur-sm p-5 rounded-md">
           {!summary && !isLoadingSummary && (
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-gray-900">Need a quick update?</h3>
-                <p className="text-xs text-gray-500">Ask {university.personaName} to summarize the week.</p>
+                <h3 className="font-semibold text-white">Need a quick update?</h3>
+                <p className="text-xs text-white/60">Ask {university.personaName} to summarize the week.</p>
               </div>
               <button
                 onClick={handleGenerateSummary}
-                className={`flex items-center gap-2 px-4 py-2 bg-${university.themeColor} text-white rounded-lg font-medium hover:opacity-90 transition-all shadow-md active:scale-95`}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md font-medium hover:bg-purple-500 transition-all shadow-md active:scale-95"
               >
                 <Sparkles size={16} />
                 Get AI Briefing
@@ -79,8 +80,8 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
           )}
 
           {isLoadingSummary && (
-            <div className="flex items-center justify-center py-4 space-x-2 text-gray-500">
-              <Sparkles className="animate-pulse text-purple-500" size={20} />
+            <div className="flex items-center justify-center py-4 space-x-2 text-white/60">
+              <Sparkles className="animate-pulse text-purple-400" size={20} />
               <span className="text-sm font-medium">Generating insights...</span>
             </div>
           )}
@@ -88,10 +89,10 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
           {summary && (
             <div className="animate-in fade-in duration-300">
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles size={16} className="text-purple-600" />
-                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">AI Insight from {university.personaName}</span>
+                <Sparkles size={16} className="text-purple-400" />
+                <span className="text-xs font-bold text-purple-300 uppercase tracking-wider">AI Insight from {university.personaName}</span>
               </div>
-              <MarkdownRenderer content={summary} textColorClass="text-gray-700" />
+              <MarkdownRenderer content={summary} textColorClass="text-white" />
             </div>
           )}
         </div>
@@ -100,35 +101,44 @@ const EventsTab: React.FC<Props> = ({ events, university }) => {
       {/* Events List */}
       <div className="space-y-4">
         {events.length === 0 ? (
-          <div className="text-center py-10 text-gray-400">
+          <div className="text-center py-10 text-white/40">
             <p>No upcoming events found.</p>
           </div>
         ) : (
           events.map(event => (
-            <div key={event.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start mb-2">
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${getCategoryColor(event.category)}`}>
-                    {event.category}
-                  </span>
-                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{event.date}</span>
+            <GlareHover
+              key={event.id}
+              background="rgba(0, 0, 0, 0.6)"
+              borderRadius="8px"
+              borderColor="rgba(255, 255, 255, 0.2)"
+              glareColor="#ffffff"
+              glareOpacity={0.2}
+            >
+              <div className="w-full p-5 text-left">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-md border ${getCategoryColor(event.category)}`}>
+                      {event.category}
+                    </span>
+                    <span className="text-xs font-semibold text-white/60 uppercase tracking-wide">{event.date}</span>
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-bold text-white mb-2">{event.title}</h3>
+                <p className="text-sm text-white/70 mb-4 leading-relaxed">{event.description}</p>
+
+                <div className="flex items-center gap-4 text-xs text-white/50">
+                  <div className="flex items-center gap-1">
+                    <Clock size={14} />
+                    <span>{event.time}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <MapPin size={14} />
+                    <span>{event.location}</span>
+                  </div>
                 </div>
               </div>
-
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{event.title}</h3>
-              <p className="text-sm text-gray-600 mb-4 leading-relaxed">{event.description}</p>
-
-              <div className="flex items-center gap-4 text-xs text-gray-500">
-                <div className="flex items-center gap-1">
-                  <Clock size={14} />
-                  <span>{event.time}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <MapPin size={14} />
-                  <span>{event.location}</span>
-                </div>
-              </div>
-            </div>
+            </GlareHover>
           ))
         )}
       </div>

@@ -5,12 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Companion</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
-      body {
-        font-family: 'Inter', sans-serif;
+      /* Theme Variables */
+      :root {
+        --bg-primary: #fafaf9;
+        --bg-secondary: #f5f5f4;
+        --bg-tertiary: #ffffff;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --text-muted: #9ca3af;
+        --border-color: #e5e7eb;
+        --accent-primary: #3b82f6;
+        --accent-secondary: #2563eb;
+        --shadow-color: rgba(0, 0, 0, 0.1);
       }
+
+      .dark {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-tertiary: #334155;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border-color: #334155;
+        --accent-primary: #60a5fa;
+        --accent-secondary: #3b82f6;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+      }
+
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .dark body {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a5a 50%, #0f172a 100%);
+      }
+
       /* Custom scrollbar for chats */
       .scrollbar-hide::-webkit-scrollbar {
           display: none;
@@ -19,6 +54,8 @@
           -ms-overflow-style: none;
           scrollbar-width: none;
       }
+
+      /* Markdown styles */
       .markdown-body ul {
         list-style-type: disc;
         padding-left: 1.5em;
@@ -41,16 +78,101 @@
       .markdown-body strong {
         font-weight: 700;
       }
+
       /* Map container fix */
       .leaflet-container {
         width: 100%;
         height: 100%;
         z-index: 0;
       }
+
+      /* Squared Design - Override Tailwind rounded classes */
+      .squared-design button,
+      .squared-design input,
+      .squared-design select,
+      .squared-design .card {
+        border-radius: 0.375rem !important; /* rounded-md */
+      }
+
+      /* Custom Auth Button */
+      .cssbuttons-io-button {
+        background: #a370f0;
+        color: white;
+        font-family: inherit;
+        padding: 0.35em;
+        padding-left: 1.2em;
+        font-size: 17px;
+        font-weight: 500;
+        border-radius: 0.5em;
+        border: none;
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        box-shadow: inset 0 0 1.6em -0.6em #714da6;
+        overflow: hidden;
+        position: relative;
+        height: 2.8em;
+        padding-right: 3.3em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .cssbuttons-io-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .cssbuttons-io-button .icon {
+        background: white;
+        margin-left: 1em;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.2em;
+        width: 2.2em;
+        border-radius: 0.4em;
+        box-shadow: 0.1em 0.1em 0.6em 0.2em #7b52b9;
+        right: 0.3em;
+        transition: all 0.3s;
+      }
+
+      .cssbuttons-io-button:hover:not(:disabled) .icon {
+        width: calc(100% - 0.6em);
+      }
+
+      .cssbuttons-io-button .icon svg {
+        width: 1.1em;
+        transition: transform 0.3s;
+        color: #7b52b9;
+      }
+
+      .cssbuttons-io-button:hover:not(:disabled) .icon svg {
+        transform: translateX(0.1em);
+      }
+
+      .cssbuttons-io-button:active:not(:disabled) .icon {
+        transform: scale(0.95);
+      }
+
+      /* Theme-aware components */
+      .theme-bg-primary { background-color: var(--bg-primary); }
+      .theme-bg-secondary { background-color: var(--bg-secondary); }
+      .theme-bg-tertiary { background-color: var(--bg-tertiary); }
+      .theme-text-primary { color: var(--text-primary); }
+      .theme-text-secondary { color: var(--text-secondary); }
+      .theme-border { border-color: var(--border-color); }
+
+      /* University logo styles */
+      .university-logo {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+      }
     </style>
   <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-gray-50">
+  <body class="bg-black">
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>

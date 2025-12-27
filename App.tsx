@@ -12,8 +12,10 @@ import GamificationPanel from './components/GamificationPanel';
 import AboutModal from './components/AboutModal';
 import EventsTab from './components/EventsTab';
 import MultiFaithTab from './components/MultiFaithTab';
+import FaqTab from './components/FaqTab';
 import AuthScreen from './components/AuthScreen';
-import { Send, GraduationCap, Info, Trash2, Trophy, Check, Star, MessageSquare, Calendar, History, Plus, ChevronDown, Heart, LogOut } from 'lucide-react';
+import Aurora from './components/Aurora';
+import { Send, GraduationCap, Info, Trash2, Trophy, Check, Star, MessageSquare, Calendar, History, Plus, ChevronDown, Heart, LogOut, HelpCircle } from 'lucide-react';
 
 const generateId = () => Math.random().toString(36).substring(2, 9);
 
@@ -43,7 +45,7 @@ const App: React.FC = () => {
   }, []);
 
   const [selectedUniId, setSelectedUniId] = useState<string>(DEFAULT_UNIVERSITY_ID);
-  const [activeTab, setActiveTab] = useState<'chat' | 'events' | 'multifaith'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'events' | 'multifaith' | 'faq'>('chat');
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -338,7 +340,7 @@ const App: React.FC = () => {
     "Where can I study late?",
     "Where is the library?",
     "Is there free Wi-Fi?",
-    "Contact the registrar",
+    "List food spots.",
   ];
 
   const formatDate = (timestamp: number) => {
@@ -365,12 +367,19 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 text-gray-900 font-sans overflow-hidden relative">
+    <div className="flex flex-col h-screen overflow-hidden relative bg-black text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+      {/* Aurora Background */}
+      <Aurora
+        colorStops={currentUniversity.auroraColors}
+        blend={0.5}
+        amplitude={1.0}
+        speed={0.5}
+      />
 
       {notification && (
-        <div className={`absolute top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-lg z-50 animate-in slide-in-from-top-5 fade-in flex items-center gap-2 font-bold transition-colors ${notification.type === 'achievement' ? 'bg-yellow-500 text-white' :
-          notification.type === 'error' ? 'bg-red-500 text-white' :
-            'bg-green-600 text-white'
+        <div className={`absolute top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-md shadow-lg z-50 animate-in slide-in-from-top-5 fade-in flex items-center gap-2 font-bold ${notification.type === 'achievement' ? 'bg-yellow-500/90 text-white' :
+          notification.type === 'error' ? 'bg-red-500/90 text-white' :
+            'bg-green-600/90 text-white'
           }`}>
           {notification.type === 'achievement' ? <Star className="fill-current" size={18} /> :
             notification.type === 'error' ? <Info size={18} /> :
@@ -379,48 +388,63 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <header className="flex-none bg-white border-b border-gray-200 pt-4 pb-2 px-4 z-10 shadow-sm">
+      <header className="flex-none pt-4 pb-2 px-4 z-20 bg-gradient-to-b from-black/30 to-transparent">
         <div className="max-w-4xl mx-auto flex justify-between items-center mb-3">
           <div className="flex items-center gap-2 md:gap-4">
-            <div className={`bg-${currentUniversity.themeColor} p-2 rounded-lg text-white hidden md:block`}>
-              <GraduationCap size={24} />
-            </div>
+            {/* University Logo */}
+            <img
+              src={currentUniversity.logoPath}
+              alt={`${currentUniversity.shortName} logo`}
+              className="w-10 h-10 object-contain"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-gray-900">UniPilot</h1>
-              <p className="text-xs text-gray-500 hidden sm:block">Interactive AI for {currentUniversity.shortName}</p>
+              <h1 className="text-xl font-bold tracking-tight text-white">UniPilot</h1>
+              <p className="text-xs hidden sm:block text-white/60">Interactive AI for {currentUniversity.shortName}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 bg-gray-50 border border-gray-100 rounded-full p-1 relative">
+            <div className="flex items-center gap-1 p-1.5 rounded-md bg-white/15 backdrop-blur-md border border-white/25 shadow-lg">
               <button
                 onClick={() => setIsAboutOpen(true)}
-                className="p-1.5 text-gray-500 hover:text-gray-800 hover:bg-white rounded-full transition-all"
+                className="p-2 rounded-md transition-all text-white/80 hover:text-white hover:bg-white/20"
                 title="About"
               >
                 <Info size={18} />
               </button>
 
-              <div className="w-px h-4 bg-gray-300 mx-0.5"></div>
+              <div className="w-px h-5 mx-1 bg-white/25"></div>
 
-              <div className="relative">
+              <div className="relative" onClick={(e) => e.stopPropagation()}>
                 <button
-                  onClick={() => setIsHistoryOpen(!isHistoryOpen)}
-                  className={`flex items-center gap-1 px-2 py-1.5 rounded-full transition-all ${isHistoryOpen ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-800 hover:bg-white'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsHistoryOpen(!isHistoryOpen);
+                  }}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-md transition-all ${isHistoryOpen
+                    ? 'bg-white/25 text-white shadow-sm'
+                    : 'text-white/80 hover:text-white hover:bg-white/20'
                     }`}
                   title="Chat History"
                 >
                   <History size={18} />
-                  <span className="text-xs font-medium hidden sm:block">History</span>
+                  <span className="text-xs font-semibold hidden sm:block">History</span>
                   <ChevronDown size={12} />
                 </button>
 
                 {isHistoryOpen && (
-                  <div className="absolute top-full right-0 mt-3 w-64 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                    <div className="p-2 border-b border-gray-50">
+                  <div
+                    className="absolute top-full right-0 mt-3 w-64 bg-black/95 backdrop-blur-xl rounded-md shadow-xl border border-white/20 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+                    style={{ zIndex: 9999 }}
+                  >
+                    <div className="p-2 border-b border-white/10">
                       <button
-                        onClick={handleNewChat}
-                        className="w-full flex items-center gap-2 px-3 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNewChat();
+                        }}
+                        className="w-full flex items-center gap-2 px-3 py-2 bg-white/20 text-white rounded-md hover:bg-white/30 transition-colors text-sm font-medium backdrop-blur-md"
                       >
                         <Plus size={16} />
                         New Chat
@@ -428,7 +452,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="max-h-64 overflow-y-auto py-1">
                       {filteredSessions.length === 0 ? (
-                        <div className="px-4 py-8 text-center text-gray-400 text-xs">
+                        <div className="px-4 py-8 text-center text-white/40 text-xs">
                           <MessageSquare size={24} className="mx-auto mb-2 opacity-20" />
                           No saved history for {currentUniversity.shortName}.
                         </div>
@@ -436,18 +460,21 @@ const App: React.FC = () => {
                         filteredSessions.map(session => (
                           <div
                             key={session.id}
-                            onClick={() => handleLoadSession(session)}
-                            className={`group flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-gray-50 transition-colors ${currentSessionId === session.id ? 'bg-blue-50 border-l-2 border-blue-500 pl-[10px]' : 'pl-3'}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleLoadSession(session);
+                            }}
+                            className={`group flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-white/10 transition-colors ${currentSessionId === session.id ? 'bg-white/15 border-l-2 border-white pl-[10px]' : 'pl-3'}`}
                           >
                             <div className="overflow-hidden">
-                              <p className={`text-sm font-medium truncate ${currentSessionId === session.id ? 'text-blue-700' : 'text-gray-700'}`}>
+                              <p className={`text-sm font-medium truncate ${currentSessionId === session.id ? 'text-white' : 'text-white/80'}`}>
                                 {session.title || "Untitled Chat"}
                               </p>
-                              <p className="text-[10px] text-gray-400">{formatDate(session.lastModified)}</p>
+                              <p className="text-[10px] text-white/40">{formatDate(session.lastModified)}</p>
                             </div>
                             <button
                               onClick={(e) => handleDeleteSession(e, session.id)}
-                              className="p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+                              className="p-1.5 text-white/30 hover:text-red-400 hover:bg-red-500/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
                             >
                               <Trash2 size={14} />
                             </button>
@@ -462,10 +489,10 @@ const App: React.FC = () => {
 
             <button
               onClick={() => setIsStatsOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 rounded-md transition-colors shadow-lg"
             >
-              <Trophy size={16} className="text-yellow-600" />
-              <span className="text-sm font-semibold text-gray-700">Lvl {userStats.level}</span>
+              <Trophy size={16} className="text-yellow-400" />
+              <span className="text-sm font-semibold text-white">Lvl {userStats.level}</span>
             </button>
 
             <UniversitySelector
@@ -480,12 +507,11 @@ const App: React.FC = () => {
               onClick={() => {
                 logout().catch(err => {
                   console.error('Logout error:', err);
-                  // Force logout by clearing state and reloading
                   setIsLoggedIn(false);
                   window.location.reload();
                 });
               }}
-              className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+              className="p-2 transition-colors text-white/60 hover:text-red-400"
               title="Log Out"
             >
               <LogOut size={20} />
@@ -497,8 +523,8 @@ const App: React.FC = () => {
           <button
             onClick={() => setActiveTab('chat')}
             className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'chat'
-              ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-white text-white'
+              : 'border-transparent text-white/50 hover:text-white/80'
               }`}
           >
             <MessageSquare size={16} />
@@ -507,8 +533,8 @@ const App: React.FC = () => {
           <button
             onClick={() => setActiveTab('events')}
             className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'events'
-              ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-white text-white'
+              : 'border-transparent text-white/50 hover:text-white/80'
               }`}
           >
             <Calendar size={16} />
@@ -517,18 +543,28 @@ const App: React.FC = () => {
           <button
             onClick={() => setActiveTab('multifaith')}
             className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'multifaith'
-              ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-white text-white'
+              : 'border-transparent text-white/50 hover:text-white/80'
               }`}
           >
             <Heart size={16} />
             Multi-Faith Spaces
           </button>
+          <button
+            onClick={() => setActiveTab('faq')}
+            className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'faq'
+              ? 'border-white text-white'
+              : 'border-transparent text-white/50 hover:text-white/80'
+              }`}
+          >
+            <HelpCircle size={16} />
+            FAQ
+          </button>
         </div>
       </header>
 
       <main
-        className="flex-1 overflow-y-auto relative scrollbar-hide"
+        className="flex-1 overflow-y-auto relative scrollbar-hide z-10"
         onClick={() => { setIsDropdownOpen(false); setIsHistoryOpen(false); }}
       >
         <div className="max-w-3xl mx-auto px-4 py-8 pb-32">
@@ -567,19 +603,23 @@ const App: React.FC = () => {
             <MultiFaithTab spaces={currentCampusData.multiFaithSpaces} university={currentUniversity} />
           )}
 
+          {activeTab === 'faq' && (
+            <FaqTab faq={currentCampusData.faq} university={currentUniversity} />
+          )}
+
         </div>
       </main>
 
       {activeTab === 'chat' && (
-        <footer className="flex-none p-4 bg-white/80 backdrop-blur-md border-t border-gray-200 absolute bottom-0 w-full z-20 animate-in slide-in-from-bottom-2">
+        <footer className="flex-none p-4 bg-gradient-to-t from-black/40 to-transparent absolute bottom-0 w-full z-20 animate-in slide-in-from-bottom-2">
           <div className="max-w-3xl mx-auto">
             {messages.length < 3 && (
-              <div className="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-hide">
+              <div className="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-hide pl-14">
                 {quickPrompts.map((prompt, i) => (
                   <button
                     key={i}
                     onClick={() => setInput(prompt)}
-                    className="whitespace-nowrap px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-xs font-medium text-gray-600 rounded-full transition-colors"
+                    className="whitespace-nowrap px-4 py-2 text-xs font-semibold rounded-md transition-colors bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 shadow-lg"
                   >
                     {prompt}
                   </button>
@@ -587,11 +627,11 @@ const App: React.FC = () => {
               </div>
             )}
 
-            <div className="relative flex items-end gap-2">
+            <div className="relative flex items-center gap-2">
               <button
-                onClick={handleNewChat}
-                title="Reset / New Chat"
-                className="p-3 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors"
+                onClick={() => setInput('')}
+                title="Clear Input"
+                className="p-3 rounded-md transition-colors text-white/70 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20"
               >
                 <Trash2 size={20} />
               </button>
@@ -604,16 +644,16 @@ const App: React.FC = () => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={`Ask ${currentUniversity.personaName} a question...`}
-                  className="w-full pl-5 pr-12 py-3.5 bg-gray-100 border-transparent focus:bg-white focus:border-gray-300 focus:ring-0 rounded-2xl shadow-inner text-gray-800 placeholder-gray-500 transition-all"
+                  className="w-full pl-5 pr-14 py-3 border border-white/30 focus:ring-0 focus:border-white/50 rounded-md shadow-lg transition-all bg-white/15 backdrop-blur-xl text-white placeholder-white/50 font-medium"
                   disabled={isLoading}
                 />
-                <div className="absolute right-2 bottom-1.5">
+                <div className="absolute right-1.5 top-1/2 -translate-y-1/2">
                   <button
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
-                    className={`p-2 rounded-xl transition-all transform active:scale-95 ${input.trim() && !isLoading
-                      ? `bg-${currentUniversity.themeColor} text-white shadow-md hover:opacity-90`
-                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    className={`p-2 rounded-md transition-all transform active:scale-95 shadow-lg ${input.trim() && !isLoading
+                      ? 'bg-white/90 text-black hover:bg-white'
+                      : 'bg-white/20 text-white/40 cursor-not-allowed backdrop-blur-md'
                       }`}
                   >
                     <Send size={18} />
@@ -621,8 +661,8 @@ const App: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="text-center mt-2">
-              <p className="text-[10px] text-gray-400">Powered by Google Gemini. Information may vary.</p>
+            <div className="text-center mt-3">
+              <p className="text-xs text-white/60 font-medium">Powered by Google Gemini. Information may vary.</p>
             </div>
           </div>
         </footer>
