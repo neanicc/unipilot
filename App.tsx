@@ -109,7 +109,7 @@ const App: React.FC = () => {
               // Find and set the user's signup university name
               const signupUni = UNIVERSITIES.find(u => u.id === profile.selected_university_id);
               if (signupUni) {
-                setUserUniversity(signupUni.shortName);
+                setUserUniversity(signupUni.name);
               }
             }
           }
