@@ -47,6 +47,130 @@ export const DATA_UW: CampusData = {
       features: ["Swimming Pool", "Gyms", "Squash Courts", "Fitness Classes"],
       hours: "6:00 AM - 11:00 PM",
       coordinates: [43.4724, -80.5462]
+    },
+    // === FOOD SPOTS - UNIVERSITY PLAZA ===
+    {
+      name: "Shinwa",
+      type: "Food / Restaurant",
+      description: "Popular Chinese restaurant in the Plaza with generous portions. Cash discount available. Student favorite for affordable meals.",
+      features: ["Chinese Cuisine", "Dine-in", "Cash Discount", "Large Portions"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Aunty's Kitchen",
+      type: "Food / Restaurant",
+      description: "Indian restaurant in the Plaza known for large portions of biryani, butter chicken, and fusion dishes.",
+      features: ["Indian Cuisine", "Biryani", "Butter Chicken", "Halal Options"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Chen's",
+      type: "Food / Restaurant",
+      description: "Affordable Chinese restaurant in the Plaza. Famous for mapo tofu.",
+      features: ["Chinese Cuisine", "Budget-Friendly", "Mapo Tofu"],
+      hours: "11:00 AM - 9:30 PM"
+    },
+    {
+      name: "Gol's Lanzhou Noodles",
+      type: "Food / Restaurant",
+      description: "Hand-pulled noodles in beef broth. Often has a line-up but worth the wait!",
+      features: ["Chinese Cuisine", "Hand-Pulled Noodles", "Beef Broth", "Popular"],
+      hours: "11:00 AM - 9:00 PM"
+    },
+    {
+      name: "Lazeez Shawarma",
+      type: "Food / Restaurant",
+      description: "The OG shawarma spot in SLC. Famous 'Lazeez on the Sticks' with rice. Halal certified.",
+      features: ["Shawarma", "Halal", "Rice Bowls", "Quick Service"],
+      hours: "10:00 AM - 11:00 PM",
+      coordinates: [43.4716, -80.5453]
+    },
+    {
+      name: "iPotato (Shawarma Plus)",
+      type: "Food / Restaurant",
+      description: "Shawarma spot in the Plaza. Known for deals and loaded shawarma plates.",
+      features: ["Shawarma", "Halal", "Deals", "Wraps"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Sowon",
+      type: "Food / Restaurant",
+      description: "Korean restaurant in the Plaza. Excellent Korean fried chicken.",
+      features: ["Korean Cuisine", "Fried Chicken", "Korean BBQ"],
+      hours: "11:30 AM - 9:30 PM"
+    },
+    {
+      name: "Ken Sushi",
+      type: "Food / Restaurant",
+      description: "One of the better sushi places near campus, across Philip Street from the Plaza.",
+      features: ["Sushi", "Japanese Cuisine", "Fresh Fish"],
+      hours: "11:30 AM - 9:00 PM"
+    },
+    {
+      name: "Mel's Diner",
+      type: "Food / Restaurant",
+      description: "Classic American diner in the Plaza. Home of the 'Godfather burger challenge'.",
+      features: ["American Cuisine", "Burgers", "Breakfast", "Diner"],
+      hours: "7:00 AM - 9:00 PM"
+    },
+    {
+      name: "Williams Fresh Cafe",
+      type: "Food / Cafe",
+      description: "Cafe in the Plaza offering sandwiches, soups, and quality coffee.",
+      features: ["Sandwiches", "Soups", "Coffee", "Salads"],
+      hours: "7:00 AM - 8:00 PM"
+    },
+    {
+      name: "Sweet Dreams Teashop",
+      type: "Food / Bubble Tea",
+      description: "Popular bubble tea shop with board games and calm atmosphere. Great study spot.",
+      features: ["Bubble Tea", "Board Games", "Study Friendly", "Calm Vibes"],
+      hours: "12:00 PM - 10:00 PM"
+    },
+    {
+      name: "Morals Village",
+      type: "Food / Restaurant",
+      description: "Epic value hotpot place in the Plaza. All-you-can-eat option available.",
+      features: ["Hotpot", "Chinese Cuisine", "All-You-Can-Eat", "Value"],
+      hours: "11:30 AM - 10:00 PM"
+    },
+    // === ON-CAMPUS FOOD ===
+    {
+      name: "SLC Food Court",
+      type: "Food / Food Court",
+      description: "Main campus food court in the Student Life Centre. Multiple vendors under one roof.",
+      features: ["Pizza Pizza", "Subway", "Shawarma Hub", "Quesada", "Teriyaki Experience", "Fresh Xpress"],
+      hours: "8:00 AM - 10:00 PM",
+      coordinates: [43.4716, -80.5453]
+    },
+    {
+      name: "ML Diner (Modern Languages)",
+      type: "Food / Restaurant",
+      description: "Hidden gem on campus! Known for warrior burgers, poutines, and milkshakes. Tim Hortons nearby.",
+      features: ["Burgers", "Poutine", "Milkshakes", "Hidden Gem"],
+      hours: "8:00 AM - 4:00 PM"
+    },
+    {
+      name: "Browser's Cafe (Dana Porter Library)",
+      type: "Food / Cafe",
+      description: "Cozy cafe inside DP Library. Coffee, teas, and pastries while you study.",
+      features: ["Coffee", "Tea", "Pastries", "In-Library"],
+      hours: "8:00 AM - 8:00 PM",
+      coordinates: [43.4700, -80.5422]
+    },
+    {
+      name: "Southside Marketplace (SCH)",
+      type: "Food / Food Court",
+      description: "Large cafeteria in South Campus Hall with diverse cuisines.",
+      features: ["Shawarma", "Pizza", "Salad Bar", "Sushi", "Variety"],
+      hours: "8:00 AM - 7:00 PM"
+    },
+    {
+      name: "Math C&D",
+      type: "Food / Cafe",
+      description: "The cheapest coffee on campus! Run by the Math Society. Cash only.",
+      features: ["Cheap Coffee", "Snacks", "Cash Only", "Math Building"],
+      hours: "9:00 AM - 5:00 PM"
     }
   ],
   resources: [
@@ -448,6 +572,79 @@ export const DATA_UOFT: CampusData = {
       features: ["Olympic Pool", "Track", "Weight Room", "Studios"],
       hours: "6:00 AM - 11:00 PM",
       coordinates: [43.6630, -79.3960]
+    },
+    // === FOOD SPOTS ===
+    {
+      name: "Robarts Library Food Court",
+      type: "Food / Food Court",
+      description: "Multiple food options inside Robarts. Grab-n-go, pizza, sushi, burritos, and BBQ.",
+      features: ["Pasta Pappardelle", "Stone Oven Pizzeria", "So Sushi", "Central Smoke BBQ", "Mexican Tortillas"],
+      hours: "8:00 AM - 8:00 PM",
+      coordinates: [43.6644, -79.3996]
+    },
+    {
+      name: "Arbor Room (Hart House)",
+      type: "Food / Restaurant",
+      description: "Elegant restaurant in Hart House basement. Breakfast, lunch, and dinner with a refined atmosphere.",
+      features: ["All-Day Breakfast", "Sit-Down Dining", "Historic Setting"],
+      hours: "11:30 AM - 8:00 PM",
+      coordinates: [43.6640, -79.3944]
+    },
+    {
+      name: "Salad King",
+      type: "Food / Restaurant",
+      description: "Thai restaurant on Yonge St near campus. Famous for cheap, filling Thai food. Student staple since 1992.",
+      features: ["Thai Cuisine", "Pad Thai", "Green Curry", "Budget-Friendly"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Sushi on Bloor",
+      type: "Food / Restaurant",
+      description: "Popular affordable sushi spot on Bloor Street West. Great value lunch specials.",
+      features: ["Sushi", "Japanese Cuisine", "Lunch Specials"],
+      hours: "11:30 AM - 10:00 PM"
+    },
+    {
+      name: "Koreatown",
+      type: "Food / Neighborhood",
+      description: "Korean restaurant district on Bloor St W near Christie station. Dozens of Korean BBQ, noodle, and fried chicken spots.",
+      features: ["Korean BBQ", "Korean Fried Chicken", "Bubble Tea", "Noodles"],
+      hours: "Varies by restaurant"
+    },
+    {
+      name: "Baldwin Street",
+      type: "Food / Neighborhood",
+      description: "Charming food street near campus with Italian, sushi, and Indian restaurants. Great for sit-down meals.",
+      features: ["Italian", "Sushi", "Indian", "Patio Dining"],
+      hours: "Varies by restaurant"
+    },
+    {
+      name: "Pai Northern Thai Kitchen",
+      type: "Food / Restaurant",
+      description: "Famous Thai restaurant near campus. Known for khao soi and incredible flavors. Usually has a wait.",
+      features: ["Thai Cuisine", "Khao Soi", "Popular", "Worth the Wait"],
+      hours: "11:30 AM - 10:00 PM"
+    },
+    {
+      name: "Anoush Shawarma",
+      type: "Food / Restaurant",
+      description: "Halal shawarma on College Street. Quick and affordable Middle Eastern food.",
+      features: ["Shawarma", "Halal", "Quick Service", "Falafel"],
+      hours: "11:00 AM - 11:00 PM"
+    },
+    {
+      name: "Banh Mi Boys",
+      type: "Food / Restaurant",
+      description: "Famous for fusion banh mi and steamed bao. The fried chicken bao is legendary.",
+      features: ["Banh Mi", "Steamed Bao", "Fusion", "Quick Service"],
+      hours: "11:00 AM - 9:00 PM"
+    },
+    {
+      name: "Cora Pizza",
+      type: "Food / Restaurant",
+      description: "Near the Athletic Centre. Known for massive pizza slices at good prices.",
+      features: ["Pizza", "Large Slices", "Budget-Friendly"],
+      hours: "11:00 AM - 9:00 PM"
     }
   ],
   resources: [
@@ -788,6 +985,79 @@ export const DATA_MAC: CampusData = {
       description: "Home of the McMaster Marauders football team.",
       features: ["Football Field", "Track", "Seating for 6,000"],
       coordinates: [43.2595, -79.9240]
+    },
+    // === FOOD SPOTS ===
+    {
+      name: "La Piazza (MUSC)",
+      type: "Food / Food Court",
+      description: "Main campus food court in the Student Centre. Pizza, poutine, salad bar, pho, wraps, and breakfast.",
+      features: ["Pizza", "Poutine", "Pho", "Salad Bar", "Wraps"],
+      hours: "8:00 AM - 8:00 PM",
+      coordinates: [43.2632, -79.9183]
+    },
+    {
+      name: "The Phoenix",
+      type: "Food / Restaurant",
+      description: "On-campus restaurant and bar with great atmosphere. Student favorite for meals and socializing.",
+      features: ["Pub Food", "Bar", "Good Atmosphere", "Student Hangout"],
+      hours: "11:00 AM - 11:00 PM"
+    },
+    {
+      name: "Pinks Burgers",
+      type: "Food / Restaurant",
+      description: "Popular burger joint on Main Street West near campus.",
+      features: ["Burgers", "Fries", "Quick Service"],
+      hours: "11:00 AM - 9:00 PM"
+    },
+    {
+      name: "Saigon (Westdale)",
+      type: "Food / Restaurant",
+      description: "Affordable Vietnamese restaurant in Westdale Village. Student favorite for pho.",
+      features: ["Vietnamese Cuisine", "Pho", "Affordable", "Rice Dishes"],
+      hours: "11:00 AM - 9:00 PM"
+    },
+    {
+      name: "The Burnt Tongue",
+      type: "Food / Restaurant",
+      description: "Soup, salads, and sandwiches in Westdale. Great for healthy lunch options.",
+      features: ["Soups", "Salads", "Sandwiches", "Healthy Options"],
+      hours: "11:00 AM - 7:00 PM"
+    },
+    {
+      name: "Basilique",
+      type: "Food / Restaurant",
+      description: "Westdale spot known for cheap, good chicken shawarma wraps.",
+      features: ["Shawarma", "Wraps", "Halal", "Budget-Friendly"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Snooty Fox",
+      type: "Food / Pub",
+      description: "Westdale pub known for specials like half-price wings and all-you-can-eat perogies.",
+      features: ["Wings", "Perogies", "Pub Food", "Specials"],
+      hours: "11:00 AM - 12:00 AM"
+    },
+    {
+      name: "Pita Pit",
+      type: "Food / Restaurant",
+      description: "Quick pitas in Westdale. Student discounts available.",
+      features: ["Pitas", "Quick Service", "Student Discounts"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Lazeez Shawarma",
+      type: "Food / Restaurant",
+      description: "Popular shawarma spot in Westdale. Same 'on the sticks' style as other locations.",
+      features: ["Shawarma", "Halal", "Rice Bowls"],
+      hours: "11:00 AM - 11:00 PM"
+    },
+    {
+      name: "The Reactor (Thode Library)",
+      type: "Food / Cafe",
+      description: "Quick meals, pastries, and specialty drinks inside Thode Library.",
+      features: ["Coffee", "Pastries", "Snacks", "In-Library"],
+      hours: "8:00 AM - 8:00 PM",
+      coordinates: [43.2614, -79.9228]
     }
   ],
   resources: [
@@ -1077,6 +1347,65 @@ export const DATA_WESTERN: CampusData = {
       features: ["Cultural Events", "Monthly Corn Soup Lunch", "Advising"],
       hours: "9:00 AM - 5:00 PM",
       coordinates: [43.0090, -81.2735]
+    },
+    // === FOOD SPOTS ===
+    {
+      name: "The Spoke",
+      type: "Food / Pub",
+      description: "Famous UCC pub known for fresh bagels and cheap beer. A Western institution.",
+      features: ["Bagels", "Pub Food", "Beer", "Student Hangout"],
+      hours: "8:00 AM - 12:00 AM",
+      coordinates: [43.0096, -81.2737]
+    },
+    {
+      name: "The Wave",
+      type: "Food / Food Court",
+      description: "Food court in UCC with multiple options including sushi, pizza, and salads.",
+      features: ["Sushi", "Pizza", "Salads", "Quick Service"],
+      hours: "8:00 AM - 8:00 PM",
+      coordinates: [43.0096, -81.2737]
+    },
+    {
+      name: "The Grad Club",
+      type: "Food / Pub",
+      description: "Grad student pub with great atmosphere. Undergrads welcome too.",
+      features: ["Pub Food", "Bar", "Trivia Nights", "Patio"],
+      hours: "11:00 AM - 11:00 PM"
+    },
+    {
+      name: "Omzzy's Shawarma",
+      type: "Food / Restaurant",
+      description: "Fresh Middle Eastern cuisine near Western. Chicken shawarma, gyros, and falafel.",
+      features: ["Shawarma", "Halal", "Gyros", "Falafel"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "King Richie's Pizzeria",
+      type: "Food / Restaurant",
+      description: "Quality pizza spot on Richmond Street.",
+      features: ["Pizza", "Sit-Down", "Quality"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Richmond Row",
+      type: "Food / Neighborhood",
+      description: "Main dining and nightlife strip in London. Dozens of restaurants, bars, and cafes within walking distance.",
+      features: ["Variety", "Bars", "Restaurants", "Nightlife"],
+      hours: "Varies by restaurant"
+    },
+    {
+      name: "The Bungalow",
+      type: "Food / Restaurant",
+      description: "Popular Northside spot known for their burgers.",
+      features: ["Burgers", "Pub Food", "Student Favorite"],
+      hours: "11:00 AM - 12:00 AM"
+    },
+    {
+      name: "Ozen Korea",
+      type: "Food / Restaurant",
+      description: "Student-recommended Korean restaurant near campus.",
+      features: ["Korean Cuisine", "Korean BBQ", "Bibimbap"],
+      hours: "11:30 AM - 9:30 PM"
     }
   ],
   resources: [
@@ -1341,6 +1670,70 @@ export const DATA_QUEENS: CampusData = {
       features: ["Coffee", "Live Music", "Study Space"],
       hours: "8:00 AM - 10:00 PM",
       coordinates: [44.2280, -76.4950]
+    },
+    // === FOOD SPOTS ===
+    {
+      name: "Bubba's Poutine & Pizzeria",
+      type: "Food / Restaurant",
+      description: "Late-night favorite! Open until 3 AM. Delivers anywhere on campus. Famous for poutine and subs.",
+      features: ["Poutine", "Pizza", "Subs", "Late Night", "Delivery"],
+      hours: "11:00 AM - 3:00 AM"
+    },
+    {
+      name: "Wooden Heads Gourmet Pizza",
+      type: "Food / Restaurant",
+      description: "Wood-fired pizzas with lively atmosphere. Student favorite for quality pizza at reasonable prices.",
+      features: ["Wood-Fired Pizza", "Great Atmosphere", "Sit-Down Dining"],
+      hours: "11:30 AM - 10:00 PM"
+    },
+    {
+      name: "Chez Piggy",
+      type: "Food / Restaurant",
+      description: "Kingston classic with stone-walled ambiance. Duck confit poutine is legendary. Worth a splurge.",
+      features: ["Fine Dining", "Duck Confit", "Patio", "Special Occasion"],
+      hours: "11:30 AM - 10:00 PM"
+    },
+    {
+      name: "Gangnam Style",
+      type: "Food / Restaurant",
+      description: "Student favorite for Korean food near campus.",
+      features: ["Korean Cuisine", "Korean Fried Chicken", "Affordable"],
+      hours: "11:00 AM - 9:30 PM"
+    },
+    {
+      name: "Mekong",
+      type: "Food / Restaurant",
+      description: "Top choice for Vietnamese food in Kingston. Great pho, green curry, and pad Thai.",
+      features: ["Vietnamese Cuisine", "Pho", "Thai Food", "Affordable"],
+      hours: "11:00 AM - 9:00 PM"
+    },
+    {
+      name: "Shawarma Dubai",
+      type: "Food / Restaurant",
+      description: "Popular halal shawarma spot near campus. Quick and delicious.",
+      features: ["Shawarma", "Halal", "Quick Service"],
+      hours: "11:00 AM - 11:00 PM"
+    },
+    {
+      name: "Sophie's Noodle House",
+      type: "Food / Restaurant",
+      description: "Known for flavorful noodle broths. Cozy spot.",
+      features: ["Noodles", "Asian Cuisine", "Cozy"],
+      hours: "11:30 AM - 9:00 PM"
+    },
+    {
+      name: "Pan Chancho Bakery",
+      type: "Food / Cafe",
+      description: "Amazing bakery and cafe. Great for breakfast, baked goods, and coffee.",
+      features: ["Bakery", "Breakfast", "Coffee", "Fresh Bread"],
+      hours: "7:30 AM - 5:00 PM"
+    },
+    {
+      name: "Fryway",
+      type: "Food / Food Truck",
+      description: "On-campus chip truck. Best poutine on campus!",
+      features: ["Poutine", "Fries", "Quick", "On-Campus"],
+      hours: "11:00 AM - 8:00 PM"
     }
   ],
   resources: [
@@ -1599,6 +1992,77 @@ export const DATA_TMU: CampusData = {
       features: ["Study Spaces", "Research Resources", "Computer Labs"],
       hours: "8:00 AM - 11:00 PM",
       coordinates: [43.6587, -79.3810]
+    },
+    // === FOOD SPOTS ===
+    {
+      name: "Oakham Café",
+      type: "Food / Restaurant",
+      description: "On-campus café with affordable options in Oakham House. Great breakfast wraps and homefries.",
+      features: ["Breakfast", "Affordable", "On-Campus"],
+      hours: "8:00 AM - 6:00 PM"
+    },
+    {
+      name: "Hub Café (Jorgenson Hall)",
+      type: "Food / Cafe",
+      description: "Grab-and-go market with soups, salads, pizza, and the 'Friendly Fiver' special.",
+      features: ["Grab-and-Go", "Soups", "Salads", "Pizza"],
+      hours: "8:00 AM - 5:00 PM"
+    },
+    {
+      name: "The Met Campus Pub",
+      type: "Food / Pub",
+      description: "Campus pub for dining and socializing. Try the cauliflower bites!",
+      features: ["Pub Food", "Student Hangout", "Beer"],
+      hours: "11:00 AM - 11:00 PM"
+    },
+    {
+      name: "Salad King",
+      type: "Food / Restaurant",
+      description: "Legendary Thai restaurant on Yonge St. Super cheap, filling, and delicious. Student staple since 1992.",
+      features: ["Thai Cuisine", "Cheap", "Large Portions", "Student Legend"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Kinton Ramen",
+      type: "Food / Restaurant",
+      description: "Popular ramen spot near campus. Great tonkotsu broth.",
+      features: ["Ramen", "Japanese Cuisine", "Trendy"],
+      hours: "11:00 AM - 10:00 PM"
+    },
+    {
+      name: "Banh Mi Boys",
+      type: "Food / Restaurant",
+      description: "Famous for fusion banh mi and steamed bao. Must try the fried chicken bao.",
+      features: ["Banh Mi", "Steamed Bao", "Fusion"],
+      hours: "11:00 AM - 9:00 PM"
+    },
+    {
+      name: "Al Madinah Pizzeria",
+      type: "Food / Restaurant",
+      description: "Halal pizza slices with student discount. Great value.",
+      features: ["Pizza", "Halal", "Student Discount", "Affordable"],
+      hours: "11:00 AM - 11:00 PM"
+    },
+    {
+      name: "H Mart Food Court",
+      type: "Food / Food Court",
+      description: "Korean grocery store with food court at Yonge and Gould. Multiple Asian food options.",
+      features: ["Korean Food", "Asian Cuisine", "Quick Service"],
+      hours: "9:00 AM - 10:00 PM"
+    },
+    {
+      name: "Eaton Centre Food Court",
+      type: "Food / Food Court",
+      description: "Massive mall food court 5-min walk south. Every chain restaurant you can imagine.",
+      features: ["Variety", "Chains", "Shopping Mall"],
+      hours: "10:00 AM - 9:00 PM"
+    },
+    {
+      name: "The Pickle Barrel (Yonge-Dundas)",
+      type: "Food / Restaurant",
+      description: "Large menu with something for everyone at Yonge-Dundas Square.",
+      features: ["Variety", "Large Menu", "Sit-Down Dining"],
+      hours: "11:00 AM - 11:00 PM"
     }
   ],
   resources: [

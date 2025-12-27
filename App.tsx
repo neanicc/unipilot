@@ -340,7 +340,7 @@ const App: React.FC = () => {
     "Where can I study late?",
     "Where is the library?",
     "Is there free Wi-Fi?",
-    "Contact the registrar",
+    "List food spots.",
   ];
 
   const formatDate = (timestamp: number) => {
@@ -553,8 +553,8 @@ const App: React.FC = () => {
           <button
             onClick={() => setActiveTab('faq')}
             className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'faq'
-              ? `border-${currentUniversity.themeColor} text-${currentUniversity.themeColor}`
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-white text-white'
+              : 'border-transparent text-white/50 hover:text-white/80'
               }`}
           >
             <HelpCircle size={16} />
