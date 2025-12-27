@@ -61,6 +61,7 @@ const App: React.FC = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [userEmail, setUserEmail] = useState<string>('');
+  const [userUniversity, setUserUniversity] = useState<string>('');
 
   const [notification, setNotification] = useState<{ text: string, type: 'success' | 'achievement' | 'error' } | null>(null);
 
@@ -89,9 +90,12 @@ const App: React.FC = () => {
     if (isLoggedIn) {
       const loadData = async () => {
         try {
-          // Get current user email
+          // Get current user full name from metadata
           const currentUser = await getCurrentUser();
-          if (currentUser?.email) {
+          if (currentUser?.user_metadata?.full_name) {
+            setUserEmail(currentUser.user_metadata.full_name);
+          } else if (currentUser?.email) {
+            // Fallback to email if no full name
             setUserEmail(currentUser.email);
           }
 
@@ -102,6 +106,11 @@ const App: React.FC = () => {
             if (profile && profile.selected_university_id) {
               setSelectedUniId(profile.selected_university_id);
               prevUniIdRef.current = profile.selected_university_id;
+              // Find and set the user's signup university name
+              const signupUni = UNIVERSITIES.find(u => u.id === profile.selected_university_id);
+              if (signupUni) {
+                setUserUniversity(signupUni.shortName);
+              }
             }
           }
 
@@ -407,6 +416,7 @@ const App: React.FC = () => {
           });
         }}
         userEmail={userEmail}
+        userUniversity={userUniversity}
         currentUniversity={currentUniversity}
       />
 

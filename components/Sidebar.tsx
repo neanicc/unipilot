@@ -30,6 +30,7 @@ interface SidebarProps {
   onDeleteSession: (e: React.MouseEvent, sessionId: string) => void;
   onLogout: () => void;
   userEmail: string;
+  userUniversity: string; // User's signup university name
   currentUniversity: UniversityProfile;
 }
 
@@ -48,6 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onDeleteSession,
   onLogout,
   userEmail,
+  userUniversity,
   currentUniversity
 }) => {
   const [isUniDropdownOpen, setIsUniDropdownOpen] = React.useState(false);
@@ -59,8 +61,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  // Get user display name from email
-  const userName = userEmail?.split('@')[0] || 'User';
+  // Get user display name - userEmail now contains full name from metadata
+  const userName = userEmail || 'User';
 
   return (
     <div 
@@ -279,8 +281,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 {userName.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-medium text-white truncate">{userName}</p>
-                <p className="text-[10px] text-white/50 truncate">{currentUniversity.shortName}</p>
+                <p className="text-sm font-medium text-white truncate">{userEmail}</p>
+                <p className="text-[10px] text-white/50 truncate">{userUniversity}</p>
               </div>
             </div>
             <button
