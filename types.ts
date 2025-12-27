@@ -33,6 +33,7 @@ export interface UniversityProfile {
   secondaryColor: string; // Tailwind class like 'blue-100'
   logoEmoji: string;
   logoPath: string; // Path to logo image
+  auroraColors: string[]; // Array of 3 hex colors for Aurora background
   welcomeMessage: string;
   styleGuide: string; // Specific instruction for the AI persona tone
 }

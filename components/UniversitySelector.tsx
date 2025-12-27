@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { UniversityProfile } from '../types';
 import { ChevronDown } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
 
 interface Props {
   universities: UniversityProfile[];
@@ -31,45 +30,49 @@ const UniversityLogo: React.FC<{ uni: UniversityProfile; size?: number }> = ({ u
 
 const UniversitySelector: React.FC<Props> = ({ universities, selectedId, onSelect, isOpen, setIsOpen }) => {
   const selectedUni = universities.find(u => u.id === selectedId) || universities[0];
-  const { theme } = useTheme();
+
+  const handleDropdownClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
-    <div className="relative">
+    <div className="relative" onClick={handleDropdownClick}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center space-x-2 px-4 py-2 rounded-md shadow-sm transition-colors border ${
-          theme === 'dark' 
-            ? 'bg-slate-800 border-slate-700 hover:bg-slate-700' 
-            : 'bg-white border-gray-200 hover:bg-gray-50'
-        }`}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
+        className="flex items-center space-x-2 px-4 py-2 rounded-md shadow-lg transition-colors bg-white/15 backdrop-blur-md border border-white/25 hover:bg-white/25"
       >
         <UniversityLogo uni={selectedUni} size={24} />
-        <span className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{selectedUni.shortName}</span>
-        <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''} ${theme === 'dark' ? 'text-slate-400' : 'text-gray-500'}`} />
+        <span className="font-semibold text-white">{selectedUni.shortName}</span>
+        <ChevronDown size={16} className={`transition-transform text-white/70 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className={`absolute top-full right-0 mt-2 w-64 rounded-md shadow-xl border z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 ${
-          theme === 'dark' ? 'bg-black border-slate-800' : 'bg-white border-gray-100'
-        }`}>
-          <div className="py-1">
+        <div 
+          className="absolute top-full right-0 mt-2 w-64 rounded-md shadow-xl border overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 bg-black/95 backdrop-blur-xl border-white/25"
+          style={{ zIndex: 9999 }}
+        >
+          <div className="py-2">
             {universities.map((uni) => (
               <button
                 key={uni.id}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   onSelect(uni.id);
                   setIsOpen(false);
                 }}
-                className={`w-full text-left px-4 py-3 flex items-center space-x-3 transition-colors border-l-4 ${
+                className={`w-full text-left px-4 py-3 flex items-center space-x-3 transition-colors ${
                   selectedId === uni.id 
-                    ? `border-${uni.themeColor} ${theme === 'dark' ? 'bg-slate-800' : 'bg-gray-50'}` 
-                    : `border-transparent ${theme === 'dark' ? 'hover:bg-slate-800' : 'hover:bg-gray-50'}`
+                    ? 'bg-white/20' 
+                    : 'hover:bg-white/10'
                 }`}
               >
                 <UniversityLogo uni={uni} size={28} />
                 <div>
-                  <p className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{uni.name}</p>
-                  <p className={`text-xs ${theme === 'dark' ? 'text-slate-400' : 'text-gray-500'}`}>{uni.personaName}</p>
+                  <p className="font-semibold text-white">{uni.name}</p>
+                  <p className="text-xs text-white/60">{uni.personaName}</p>
                 </div>
               </button>
             ))}
