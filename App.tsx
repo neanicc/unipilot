@@ -4,7 +4,7 @@ import { Message, Sender, UserStats, ChatSession } from './types';
 import { generateResponse } from './services/geminiService';
 import { getUserStats, processUserInteraction, generateUserContextSummary } from './services/statsService';
 import { getChatSessions, createChatSession, addMessage, deleteChatSession } from './services/chatService';
-import { isAuthenticated, logout, getUserProfile } from './services/authService';
+import { isAuthenticated, logout, getUserProfile, getCurrentUser } from './services/authService';
 import { DATA_UW, DATA_UOFT, DATA_MAC, DATA_WESTERN, DATA_QUEENS, DATA_TMU } from './services/campusData';
 import UniversitySelector from './components/UniversitySelector';
 import MessageBubble from './components/MessageBubble';
@@ -15,6 +15,7 @@ import MultiFaithTab from './components/MultiFaithTab';
 import FaqTab from './components/FaqTab';
 import AuthScreen from './components/AuthScreen';
 import Aurora from './components/Aurora';
+import Sidebar from './components/Sidebar';
 import { Send, GraduationCap, Info, Trash2, Trophy, Check, Star, MessageSquare, Calendar, History, Plus, ChevronDown, Heart, LogOut, HelpCircle } from 'lucide-react';
 
 const generateId = () => Math.random().toString(36).substring(2, 9);
@@ -58,6 +59,8 @@ const App: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [userEmail, setUserEmail] = useState<string>('');
 
   const [notification, setNotification] = useState<{ text: string, type: 'success' | 'achievement' | 'error' } | null>(null);
 
@@ -86,6 +89,12 @@ const App: React.FC = () => {
     if (isLoggedIn) {
       const loadData = async () => {
         try {
+          // Get current user email
+          const currentUser = await getCurrentUser();
+          if (currentUser?.email) {
+            setUserEmail(currentUser.email);
+          }
+
           // Load User Profile for preferred university
           let profile = null;
           if (USE_BACKEND) {
@@ -367,7 +376,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden relative bg-black text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+    <div className="flex h-screen overflow-hidden relative bg-black text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
       {/* Aurora Background */}
       <Aurora
         colorStops={currentUniversity.auroraColors}
@@ -376,198 +385,86 @@ const App: React.FC = () => {
         speed={0.5}
       />
 
-      {notification && (
-        <div className={`absolute top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-md shadow-lg z-50 animate-in slide-in-from-top-5 fade-in flex items-center gap-2 font-bold ${notification.type === 'achievement' ? 'bg-yellow-500/90 text-white' :
-          notification.type === 'error' ? 'bg-red-500/90 text-white' :
-            'bg-green-600/90 text-white'
-          }`}>
-          {notification.type === 'achievement' ? <Star className="fill-current" size={18} /> :
-            notification.type === 'error' ? <Info size={18} /> :
-              <Check size={18} />}
-          {notification.text}
-        </div>
-      )}
+      {/* Sidebar */}
+      <Sidebar
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+        universities={UNIVERSITIES}
+        selectedUniId={selectedUniId}
+        onSelectUni={setSelectedUniId}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        sessions={filteredSessions}
+        currentSessionId={currentSessionId}
+        onNewChat={handleNewChat}
+        onLoadSession={handleLoadSession}
+        onDeleteSession={handleDeleteSession}
+        onLogout={() => {
+          logout().catch(err => {
+            console.error('Logout error:', err);
+            setIsLoggedIn(false);
+            window.location.reload();
+          });
+        }}
+        userEmail={userEmail}
+        currentUniversity={currentUniversity}
+      />
 
-      <header className="flex-none pt-4 pb-2 px-4 z-20 bg-gradient-to-b from-black/30 to-transparent">
-        <div className="max-w-4xl mx-auto flex justify-between items-center mb-3">
-          <div className="flex items-center gap-2 md:gap-4">
-            {/* University Logo */}
-            <img
-              src={currentUniversity.logoPath}
-              alt={`${currentUniversity.shortName} logo`}
-              className="w-10 h-10 object-contain"
-              onError={(e) => { e.currentTarget.style.display = 'none'; }}
-            />
-            <div>
-              <h1 className="text-xl font-bold tracking-tight text-white">UniPilot</h1>
-              <p className="text-xs hidden sm:block text-white/60">Interactive AI for {currentUniversity.shortName}</p>
-            </div>
+      {/* Main Content Area */}
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
+        
+        {notification && (
+          <div className={`absolute top-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-md shadow-lg z-50 animate-in slide-in-from-top-5 fade-in flex items-center gap-2 font-bold ${notification.type === 'achievement' ? 'bg-yellow-500/90 text-white' :
+            notification.type === 'error' ? 'bg-red-500/90 text-white' :
+              'bg-green-600/90 text-white'
+            }`}>
+            {notification.type === 'achievement' ? <Star className="fill-current" size={18} /> :
+              notification.type === 'error' ? <Info size={18} /> :
+                <Check size={18} />}
+            {notification.text}
           </div>
+        )}
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 p-1.5 rounded-md bg-white/15 backdrop-blur-md border border-white/25 shadow-lg">
+        {/* Top Bar with Stats */}
+        <header className="flex-none p-4 z-20 bg-gradient-to-b from-black/40 to-transparent">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              {!isSidebarOpen && (
+                <div className="flex items-center gap-2">
+                  <img 
+                    src={currentUniversity.logoPath} 
+                    alt={currentUniversity.shortName}
+                    className="w-8 h-8 object-contain"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                  <span className="text-lg font-bold text-white">UniPilot</span>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsAboutOpen(true)}
-                className="p-2 rounded-md transition-all text-white/80 hover:text-white hover:bg-white/20"
+                className="p-2 rounded-md transition-all text-white/60 hover:text-white hover:bg-white/10"
                 title="About"
               >
                 <Info size={18} />
               </button>
-
-              <div className="w-px h-5 mx-1 bg-white/25"></div>
-
-              <div className="relative" onClick={(e) => e.stopPropagation()}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsHistoryOpen(!isHistoryOpen);
-                  }}
-                  className={`flex items-center gap-1 px-3 py-2 rounded-md transition-all ${isHistoryOpen
-                    ? 'bg-white/25 text-white shadow-sm'
-                    : 'text-white/80 hover:text-white hover:bg-white/20'
-                    }`}
-                  title="Chat History"
-                >
-                  <History size={18} />
-                  <span className="text-xs font-semibold hidden sm:block">History</span>
-                  <ChevronDown size={12} />
-                </button>
-
-                {isHistoryOpen && (
-                  <div
-                    className="absolute top-full right-0 mt-3 w-64 bg-black/95 backdrop-blur-xl rounded-md shadow-xl border border-white/20 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
-                    style={{ zIndex: 9999 }}
-                  >
-                    <div className="p-2 border-b border-white/10">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleNewChat();
-                        }}
-                        className="w-full flex items-center gap-2 px-3 py-2 bg-white/20 text-white rounded-md hover:bg-white/30 transition-colors text-sm font-medium backdrop-blur-md"
-                      >
-                        <Plus size={16} />
-                        New Chat
-                      </button>
-                    </div>
-                    <div className="max-h-64 overflow-y-auto py-1">
-                      {filteredSessions.length === 0 ? (
-                        <div className="px-4 py-8 text-center text-white/40 text-xs">
-                          <MessageSquare size={24} className="mx-auto mb-2 opacity-20" />
-                          No saved history for {currentUniversity.shortName}.
-                        </div>
-                      ) : (
-                        filteredSessions.map(session => (
-                          <div
-                            key={session.id}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleLoadSession(session);
-                            }}
-                            className={`group flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-white/10 transition-colors ${currentSessionId === session.id ? 'bg-white/15 border-l-2 border-white pl-[10px]' : 'pl-3'}`}
-                          >
-                            <div className="overflow-hidden">
-                              <p className={`text-sm font-medium truncate ${currentSessionId === session.id ? 'text-white' : 'text-white/80'}`}>
-                                {session.title || "Untitled Chat"}
-                              </p>
-                              <p className="text-[10px] text-white/40">{formatDate(session.lastModified)}</p>
-                            </div>
-                            <button
-                              onClick={(e) => handleDeleteSession(e, session.id)}
-                              className="p-1.5 text-white/30 hover:text-red-400 hover:bg-red-500/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
+              <button
+                onClick={() => setIsStatsOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-md transition-colors"
+              >
+                <Trophy size={16} className="text-yellow-400" />
+                <span className="text-sm font-semibold text-white">Lvl {userStats.level}</span>
+              </button>
             </div>
-
-            <button
-              onClick={() => setIsStatsOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 rounded-md transition-colors shadow-lg"
-            >
-              <Trophy size={16} className="text-yellow-400" />
-              <span className="text-sm font-semibold text-white">Lvl {userStats.level}</span>
-            </button>
-
-            <UniversitySelector
-              universities={UNIVERSITIES}
-              selectedId={selectedUniId}
-              onSelect={setSelectedUniId}
-              isOpen={isDropdownOpen}
-              setIsOpen={setIsDropdownOpen}
-            />
-
-            <button
-              onClick={() => {
-                logout().catch(err => {
-                  console.error('Logout error:', err);
-                  setIsLoggedIn(false);
-                  window.location.reload();
-                });
-              }}
-              className="p-2 transition-colors text-white/60 hover:text-red-400"
-              title="Log Out"
-            >
-              <LogOut size={20} />
-            </button>
           </div>
-        </div>
+        </header>
 
-        <div className="max-w-4xl mx-auto flex gap-6 px-2 overflow-x-auto">
-          <button
-            onClick={() => setActiveTab('chat')}
-            className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'chat'
-              ? 'border-white text-white'
-              : 'border-transparent text-white/50 hover:text-white/80'
-              }`}
-          >
-            <MessageSquare size={16} />
-            Chat Assistant
-          </button>
-          <button
-            onClick={() => setActiveTab('events')}
-            className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'events'
-              ? 'border-white text-white'
-              : 'border-transparent text-white/50 hover:text-white/80'
-              }`}
-          >
-            <Calendar size={16} />
-            Campus Events
-          </button>
-          <button
-            onClick={() => setActiveTab('multifaith')}
-            className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'multifaith'
-              ? 'border-white text-white'
-              : 'border-transparent text-white/50 hover:text-white/80'
-              }`}
-          >
-            <Heart size={16} />
-            Multi-Faith Spaces
-          </button>
-          <button
-            onClick={() => setActiveTab('faq')}
-            className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'faq'
-              ? 'border-white text-white'
-              : 'border-transparent text-white/50 hover:text-white/80'
-              }`}
-          >
-            <HelpCircle size={16} />
-            FAQ
-          </button>
-        </div>
-      </header>
-
-      <main
-        className="flex-1 overflow-y-auto relative scrollbar-hide z-10"
-        onClick={() => { setIsDropdownOpen(false); setIsHistoryOpen(false); }}
-      >
-        <div className="max-w-3xl mx-auto px-4 py-8 pb-32">
+        <main
+          className="flex-1 overflow-y-auto relative scrollbar-hide z-10"
+          onClick={() => { setIsDropdownOpen(false); setIsHistoryOpen(false); }}
+        >
+          <div className="max-w-3xl mx-auto px-4 py-4 pb-4">
 
           {activeTab === 'chat' && (
             <>
@@ -611,7 +508,7 @@ const App: React.FC = () => {
       </main>
 
       {activeTab === 'chat' && (
-        <footer className="flex-none p-4 bg-gradient-to-t from-black/40 to-transparent absolute bottom-0 w-full z-20 animate-in slide-in-from-bottom-2">
+        <footer className="flex-none p-4 bg-gradient-to-t from-black/40 to-transparent z-20 animate-in slide-in-from-bottom-2">
           <div className="max-w-3xl mx-auto">
             {messages.length < 3 && (
               <div className="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-hide pl-14">
@@ -667,6 +564,8 @@ const App: React.FC = () => {
           </div>
         </footer>
       )}
+
+      </div> {/* End Main Content Area */}
 
       <GamificationPanel
         stats={userStats}

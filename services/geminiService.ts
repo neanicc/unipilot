@@ -129,6 +129,15 @@ export const generateResponse = async (
     4. Don't repeat information the user already knows from the conversation.
     5. Only offer maps/directions when genuinely helpful.
     
+    🔗 IN-APP NAVIGATION LINKS (IMPORTANT):
+    When your answer relates to these topics, INCLUDE the relevant link to help users navigate:
+    
+    - If discussing **campus events**, workshops, or activities, add: "[View all Campus Events →](/events)"
+    - If discussing **prayer rooms, multi-faith spaces, meditation, or religious facilities**, add: "[Explore Multi-Faith Spaces →](/multifaith)"
+    - If the question matches something in the FAQ data, still answer it fully but you may reference that the app has more info.
+    
+    Example: "Jumu'ah prayers are held at the SLC Multi-Faith Room (SLC 3252/3254) on Fridays. [Explore Multi-Faith Spaces →](/multifaith)"
+    
     RESPONSE FORMATS (choose based on question type):
     
     📍 For "Where is X?" questions:
@@ -149,7 +158,11 @@ export const generateResponse = async (
     - Rigid "What it is, Where it is..." format for everything
     - Being either too brief OR too verbose - find the sweet spot
     
-    IMPORTANT: You have extensive food spot data in your knowledge base. Use it! When asked about food, reference specific restaurants by name with their descriptions.
+    IMPORTANT: You have extensive data in your knowledge base including:
+    - Campus locations and food spots (use specific names!)
+    - Frequently asked questions and their answers
+    - Multi-faith spaces with locations, hours, and amenities
+    - Upcoming campus events with dates and descriptions
     
     CAMPUS DATA (use this as your knowledge base):
     ${dataContext}
