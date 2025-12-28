@@ -73,7 +73,7 @@ If the question is not about a physical place, set mapLocation to null.`;
 
     // Create the model with structured output
     const model = ai.getGenerativeModel({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       systemInstruction,
       generationConfig: {
         responseMimeType: "application/json",
@@ -102,17 +102,27 @@ If the question is not about a physical place, set mapLocation to null.`;
   } catch (error: any) {
     console.error('Gemini API Error:', error);
     
+    const errorMessage = error.message || error.toString();
+    
     // Handle rate limiting
-    if (error.message?.includes('429')) {
+    if (errorMessage.includes('429') || errorMessage.includes('quota')) {
       return res.status(429).json({ 
-        error: 'Rate limit exceeded. Please try again in a moment.',
+        error: 'Rate limit exceeded',
         text: "I'm receiving too many requests right now. Please wait a moment and try again."
+      });
+    }
+    
+    // Handle missing API key
+    if (errorMessage.includes('GEMINI_API_KEY')) {
+      return res.status(500).json({ 
+        error: 'API key not configured',
+        text: "The AI service is not properly configured. Please contact support."
       });
     }
 
     return res.status(500).json({ 
-      error: 'Internal server error',
-      text: "I'm having trouble processing your request. Please try again."
+      error: errorMessage,
+      text: `Error: ${errorMessage}`
     });
   }
 }
