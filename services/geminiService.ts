@@ -89,7 +89,20 @@ export const generateResponse = async (
   sessionId: string | null = null
 ): Promise<{ text: string, mapLocation?: { lat: number, lng: number, name: string } }> => {
 
-  // --- CLIENT SIDE MODE (DEFAULT) ---
+  // --- VERCEL API MODE (PRODUCTION) ---
+  // When USE_BACKEND is true and we're in production (no VITE_ env vars available),
+  // use the Vercel API route which keeps the API key secure
+  if (USE_BACKEND) {
+    const { chatWithVercelAPI } = await import('./apiService');
+    return chatWithVercelAPI(
+      universityId, 
+      userMessage, 
+      history.map(m => ({ sender: m.sender, text: m.text })),
+      userContext
+    );
+  }
+
+  // --- CLIENT SIDE MODE (DEVELOPMENT) ---
   const genAI = getAI();
   if (!genAI) {
     return { text: "No API key configured. Please set the VITE_GEMINI_API_KEY environment variable in your .env file." };
