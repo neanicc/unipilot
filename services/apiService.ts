@@ -49,6 +49,45 @@ export const chatWithBackend = async (
   }
 };
 
+/**
+ * Chat with Vercel API route (for secure production deployment)
+ * Uses relative path so it works in both dev and production
+ */
+export const chatWithVercelAPI = async (
+  universityId: string,
+  userMessage: string,
+  history: { sender: string; text: string }[],
+  userContext: string
+): Promise<{ text: string; mapLocation?: { lat: number; lng: number; name: string } }> => {
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        universityId,
+        userMessage,
+        history: history.map(m => ({ sender: m.sender, text: m.text })),
+        userContext
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      if (errorData.text) {
+        return { text: errorData.text };
+      }
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Vercel API Error:", error);
+    throw error;
+  }
+};
+
 export const summarizeEventsBackend = async (universityId: string, events: CampusEvent[]): Promise<string> => {
     try {
         const response = await fetch(`${API_BASE_URL}/events/summarize`, {
