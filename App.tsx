@@ -668,8 +668,7 @@ const App: React.FC = () => {
               </div>
             </div>
             <div className="text-center mt-3">
-              <p className="text-xs text-white/60 font-medium">Powered by Google Gemini. Information may vary.</p>
-              <p className="text-xs text-white/40 mt-1">
+              <p className="text-xs text-white/40">
                 Created by{' '}
                 <a href="https://linkedin.com/in/abdullahrajput1" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors">@abrj7</a>
                 {' '}&{' '}

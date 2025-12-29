@@ -55,6 +55,9 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const [isUniDropdownOpen, setIsUniDropdownOpen] = React.useState(false);
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = React.useState(false);
+  
+  // Get the user's signup university profile for the avatar color
+  const userUniProfile = universities.find(u => u.name === userUniversity || u.shortName === userUniversity);
   const selectedUni = universities.find(u => u.id === selectedUniId) || universities[0];
 
   const formatDate = (isoString: string) => {
@@ -292,7 +295,10 @@ const Sidebar: React.FC<SidebarProps> = ({
         {isOpen ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 min-w-0">
-              <div className="w-8 h-8 rounded-md bg-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+              <div 
+                className="w-8 h-8 rounded-md flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                style={{ backgroundColor: userUniProfile?.auroraColors?.[0] || '#9333ea' }}
+              >
                 {userName.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">

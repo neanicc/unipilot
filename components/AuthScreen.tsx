@@ -278,6 +278,14 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
             </span>
           </button>
         </form>
+        
+        <p className="text-xs text-white/40 text-center mt-6">
+          Created by{' '}
+          <a href="https://linkedin.com/in/abdullahrajput1" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors">@abrj7</a>
+          {' '}&{' '}
+          <a href="https://www.linkedin.com/in/ali-intelligence/" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors">@neanicc</a>
+          . All rights reserved.
+        </p>
       </div>
     </div>
   );
