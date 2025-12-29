@@ -7,12 +7,15 @@ import { Session, AuthChangeEvent } from '@supabase/supabase-js';
  * Register a new user with email, password, name, and university
  */
 export const register = async (email: string, password: string, name: string, universityId: string) => {
+  console.log('Registering user with university:', universityId);
+  
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: {
         full_name: name,
+        selected_university: universityId, // Also store in auth metadata as backup
       },
     },
   });
@@ -22,20 +25,53 @@ export const register = async (email: string, password: string, name: string, un
   }
 
   // Update public profile with selected university
-  // Use upsert to ensure the row exists (trigger might not have run yet)
+  // The database trigger creates the row, we need to update it after trigger runs
   if (data.user) {
-    const { error: profileError } = await supabase
-      .from('users')
-      .upsert({ 
-        id: data.user.id, 
-        selected_university_id: universityId 
-      }, { 
-        onConflict: 'id' 
-      });
+    const userId = data.user.id;
+    
+    // Retry logic - the trigger might take a moment to create the row
+    let updated = false;
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      // Wait before each attempt (increasing delay)
+      await new Promise(resolve => setTimeout(resolve, attempt * 300));
+      
+      // Try to update
+      const { error: updateError, count } = await supabase
+        .from('users')
+        .update({ selected_university_id: universityId })
+        .eq('id', userId)
+        .select();
 
-    if (profileError) {
-      console.error('Error updating user profile:', profileError);
-      // Don't throw here, as auth was successful
+      console.log(`Update attempt ${attempt}:`, { updateError, count, universityId });
+
+      if (!updateError && count && count > 0) {
+        console.log('Successfully updated university to:', universityId);
+        updated = true;
+        break;
+      }
+      
+      if (updateError) {
+        console.error(`Update attempt ${attempt} error:`, updateError);
+      }
+    }
+
+    // If all updates failed, try direct insert as last resort
+    if (!updated) {
+      console.log('All update attempts failed, trying insert...');
+      const { error: insertError } = await supabase
+        .from('users')
+        .upsert({ 
+          id: userId, 
+          selected_university_id: universityId 
+        }, { 
+          onConflict: 'id' 
+        });
+      
+      if (insertError) {
+        console.error('Insert/upsert error:', insertError);
+      } else {
+        console.log('Upsert succeeded with university:', universityId);
+      }
     }
   }
 

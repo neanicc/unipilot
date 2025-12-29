@@ -58,6 +58,7 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
         await login(email, password);
         onAuthSuccess();
       } else {
+        console.log('AuthScreen calling register with universityId:', universityId);
         await register(email, password, name, universityId);
         // Show success screen for signup
         setSignupSuccess(true);
@@ -241,6 +242,7 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
                         key={uni.id}
                         type="button"
                         onClick={() => {
+                          console.log('Dropdown selected:', uni.id);
                           setUniversityId(uni.id);
                           setIsUniDropdownOpen(false);
                         }}

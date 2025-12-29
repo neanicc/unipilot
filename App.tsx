@@ -138,24 +138,24 @@ const App: React.FC = () => {
             setUserEmail(currentUser.email);
           }
 
+          // Get university from auth metadata first (most reliable)
+          let universityFromAuth = currentUser?.user_metadata?.selected_university;
+          
           // Load User Profile for preferred university
           let profile = null;
           if (USE_BACKEND) {
             profile = await getUserProfile();
-            if (profile && profile.selected_university_id) {
-              setSelectedUniId(profile.selected_university_id);
-              prevUniIdRef.current = profile.selected_university_id;
-              // Find and set the user's signup university name
-              const signupUni = UNIVERSITIES.find(u => u.id === profile.selected_university_id);
-              if (signupUni) {
-                setUserUniversity(signupUni.name);
-              }
-            } else {
-              // Fallback: use default university if none set in profile
-              const defaultUni = UNIVERSITIES.find(u => u.id === DEFAULT_UNIVERSITY_ID);
-              if (defaultUni) {
-                setUserUniversity(defaultUni.name);
-              }
+            
+            // Priority: 1. Auth metadata, 2. Profile table, 3. Default
+            const universityId = universityFromAuth || profile?.selected_university_id || DEFAULT_UNIVERSITY_ID;
+            
+            setSelectedUniId(universityId);
+            prevUniIdRef.current = universityId;
+            
+            // Find and set the user's signup university name
+            const signupUni = UNIVERSITIES.find(u => u.id === universityId);
+            if (signupUni) {
+              setUserUniversity(signupUni.name);
             }
           }
 
