@@ -66,12 +66,20 @@ const AboutModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 <p className="text-sm text-white/60">Switch to the Events tab to see upcoming workshops and socials, summarized weekly by the AI.</p>
              </div>
              
-             <div className="p-4 bg-red-500/10 rounded-md border border-red-500/30 md:col-span-2">
+             <div className="p-4 bg-red-500/10 rounded-md border border-red-500/30">
                 <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 bg-red-500/20 rounded-md text-red-400"><Heart size={20} /></div>
-                    <h3 className="font-bold text-white">New! Multi-Faith Spaces</h3>
+                    <h3 className="font-bold text-white">Multi-Faith Spaces</h3>
                 </div>
-                <p className="text-sm text-white/60">We've added a dedicated tab to find prayer rooms, meditation spaces, and multi-faith centres on every supported campus.</p>
+                <p className="text-sm text-white/60">Find prayer rooms, meditation spaces, and multi-faith centres on every supported campus.</p>
+             </div>
+
+             <div className="p-4 bg-cyan-500/10 rounded-md border border-cyan-500/30">
+                <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 bg-cyan-500/20 rounded-md text-cyan-400"><Map size={20} /></div>
+                    <h3 className="font-bold text-white">Campus Maps</h3>
+                </div>
+                <p className="text-sm text-white/60">Explore interactive campus maps with buildings, food spots, libraries, and key landmarks marked for easy navigation.</p>
              </div>
 
              <div className="p-4 bg-purple-500/10 rounded-md border border-purple-500/30 md:col-span-2">

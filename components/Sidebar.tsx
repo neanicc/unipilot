@@ -11,7 +11,8 @@ import {
   ChevronDown,
   HelpCircle,
   PanelLeftOpen,
-  PanelLeftClose
+  PanelLeftClose,
+  MapPin
 } from 'lucide-react';
 import { UniversityProfile, ChatSession } from '../types';
 
@@ -230,6 +231,20 @@ const Sidebar: React.FC<SidebarProps> = ({
         >
           <HelpCircle size={16} />
           {isOpen && 'FAQ'}
+        </button>
+        <button
+          onClick={() => setActiveTab('map')}
+          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${
+            isOpen ? 'w-full px-3 py-2' : 'p-2.5'
+          } ${
+            activeTab === 'map' 
+              ? 'bg-white/15 text-white' 
+              : 'text-white/60 hover:text-white hover:bg-white/10'
+          }`}
+          title="Campus Map"
+        >
+          <MapPin size={16} />
+          {isOpen && 'Campus Map'}
         </button>
       </div>
 

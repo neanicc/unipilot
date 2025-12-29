@@ -1,8 +1,17 @@
 
 import React, { useState } from 'react';
 import { login, register } from '../services/authService';
-import { GraduationCap, ArrowRight, Loader2, Mail, ArrowLeft } from 'lucide-react';
+import { GraduationCap, ArrowRight, Loader2, Mail, ArrowLeft, Lock, User, ChevronDown } from 'lucide-react';
 import Aurora from './Aurora';
+
+const UNIVERSITIES = [
+  { id: 'uw', name: 'University of Waterloo', logo: '/logos/uw.png' },
+  { id: 'uoft', name: 'University of Toronto', logo: '/logos/uoft.png' },
+  { id: 'mac', name: 'McMaster University', logo: '/logos/mac.png' },
+  { id: 'western', name: 'Western University', logo: '/logos/western.png' },
+  { id: 'queens', name: "Queen's University", logo: '/logos/queens.png' },
+  { id: 'tmu', name: 'Toronto Metropolitan University', logo: '/logos/tmu.png' },
+];
 
 interface Props {
   onAuthSuccess: () => void;
@@ -17,6 +26,9 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [isUniDropdownOpen, setIsUniDropdownOpen] = useState(false);
+
+  const selectedUni = UNIVERSITIES.find(u => u.id === universityId) || UNIVERSITIES[0];
 
   const validatePassword = (pwd: string) => {
     // At least 8 chars, 1 uppercase, 1 lowercase, 1 special char
@@ -156,57 +168,98 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
           {!isLogin && (
             <div>
               <label className="block text-sm font-medium text-white/80 mb-1">Full Name</label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white placeholder-white/40"
-                placeholder="John Doe"
-              />
+              <div className="relative">
+                <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white placeholder-white/40"
+                  placeholder="John Doe"
+                />
+              </div>
             </div>
           )}
 
           <div>
             <label className="block text-sm font-medium text-white/80 mb-1">Email Address</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white placeholder-white/40"
-              placeholder="student@university.edu"
-            />
+            <div className="relative">
+              <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white placeholder-white/40"
+                placeholder="student@university.edu"
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-white/80 mb-1">Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white placeholder-white/40"
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white placeholder-white/40"
+                placeholder="••••••••"
+              />
+            </div>
             {!isLogin && <p className="text-xs text-white/40 mt-1">Min 8 chars, Upper, Lower, Special (!@#$)</p>}
           </div>
 
           {!isLogin && (
             <div>
               <label className="block text-sm font-medium text-white/80 mb-1">Select University</label>
-              <select
-                value={universityId}
-                onChange={(e) => setUniversityId(e.target.value)}
-                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white"
-              >
-                <option value="uw" className="bg-black text-white">University of Waterloo</option>
-                <option value="uoft" className="bg-black text-white">University of Toronto</option>
-                <option value="mac" className="bg-black text-white">McMaster University</option>
-                <option value="western" className="bg-black text-white">Western University</option>
-                <option value="queens" className="bg-black text-white">Queen's University</option>
-                <option value="tmu" className="bg-black text-white">Toronto Metropolitan U</option>
-              </select>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsUniDropdownOpen(!isUniDropdownOpen)}
+                  className="w-full px-4 py-2.5 bg-white/10 border border-white/20 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-3">
+                    <img 
+                      src={selectedUni.logo} 
+                      alt={selectedUni.name}
+                      className="w-6 h-6 object-contain"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                    <span className="text-sm">{selectedUni.name}</span>
+                  </div>
+                  <ChevronDown size={18} className={`text-white/60 transition-transform ${isUniDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {isUniDropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-black/95 backdrop-blur-xl rounded-md border border-white/20 overflow-hidden z-50 shadow-xl">
+                    {UNIVERSITIES.map(uni => (
+                      <button
+                        key={uni.id}
+                        type="button"
+                        onClick={() => {
+                          setUniversityId(uni.id);
+                          setIsUniDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/10 transition-colors ${
+                          universityId === uni.id ? 'bg-white/15' : ''
+                        }`}
+                      >
+                        <img 
+                          src={uni.logo} 
+                          alt={uni.name}
+                          className="w-6 h-6 object-contain"
+                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                        <span className="text-sm text-white">{uni.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

@@ -89,22 +89,6 @@ const GamificationPanel: React.FC<Props> = ({ stats, isOpen, onClose }) => {
               </div>
             ))}
           </div>
-
-          {/* Study Stats */}
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold text-white mb-4">Study Interests</h3>
-            {topics.length === 0 ? (
-              <p className="text-white/50 text-sm italic">Ask questions to track your interests!</p>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {topics.map(({ name, count }) => (
-                  <div key={name} className="px-3 py-1 bg-white/10 rounded-md text-xs font-medium text-white/80 capitalize border border-white/20">
-                    {name}: {count}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
