@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { login, register } from '../services/authService';
-import { GraduationCap, ArrowRight, Loader2 } from 'lucide-react';
+import { GraduationCap, ArrowRight, Loader2, Mail, ArrowLeft } from 'lucide-react';
 import Aurora from './Aurora';
 
 interface Props {
@@ -16,6 +16,7 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
   const [universityId, setUniversityId] = useState('uw');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   const validatePassword = (pwd: string) => {
     // At least 8 chars, 1 uppercase, 1 lowercase, 1 special char
@@ -43,16 +44,73 @@ const AuthScreen: React.FC<Props> = ({ onAuthSuccess }) => {
     try {
       if (isLogin) {
         await login(email, password);
+        onAuthSuccess();
       } else {
         await register(email, password, name, universityId);
+        // Show success screen for signup
+        setSignupSuccess(true);
       }
-      onAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Something went wrong');
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleBackToLogin = () => {
+    setSignupSuccess(false);
+    setIsLogin(true);
+    setEmail('');
+    setPassword('');
+    setName('');
+    setError('');
+  };
+
+  // Show success screen after signup
+  if (signupSuccess) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black p-4 relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+        <Aurora
+          colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
+        />
+        <div className="bg-black/60 backdrop-blur-xl w-full max-w-md p-8 rounded-md shadow-xl border border-white/20 relative z-10 text-center animate-in fade-in zoom-in-95 duration-300">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500 text-white rounded-full mb-6 shadow-lg">
+            <Mail size={40} />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-3">Check Your Email!</h1>
+          <p className="text-white/70 mb-2">
+            We've sent a confirmation link to:
+          </p>
+          <p className="text-white font-semibold mb-6 bg-white/10 rounded-md py-2 px-4 inline-block">
+            {email}
+          </p>
+          <div className="bg-white/5 rounded-md p-4 mb-6 text-left">
+            <p className="text-white/60 text-sm mb-2">
+              <strong className="text-white/80">Next steps:</strong>
+            </p>
+            <ol className="text-white/60 text-sm space-y-1 list-decimal list-inside">
+              <li>Open the email from UniPilot</li>
+              <li>Click the confirmation link</li>
+              <li>Come back and log in!</li>
+            </ol>
+          </div>
+          <p className="text-white/40 text-xs mb-6">
+            Didn't receive it? Check your spam folder.
+          </p>
+          <button
+            onClick={handleBackToLogin}
+            className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-md transition-all font-medium flex items-center justify-center gap-2"
+          >
+            <ArrowLeft size={18} />
+            Back to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-4 relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>

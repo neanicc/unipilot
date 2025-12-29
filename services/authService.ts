@@ -116,11 +116,32 @@ export const getCurrentUser = async () => {
 };
 
 /**
- * Check if user is authenticated
+ * Check if user is authenticated AND has confirmed their email
  */
 export const isAuthenticated = async (): Promise<boolean> => {
   const session = await getSession();
-  return !!session;
+  if (!session) return false;
+
+  // Check if email is confirmed
+  const user = await getCurrentUser();
+  if (!user) return false;
+
+  // email_confirmed_at is null if not confirmed
+  return !!user.email_confirmed_at;
+};
+
+/**
+ * Check if user has a session but hasn't confirmed email yet
+ */
+export const isAwaitingEmailConfirmation = async (): Promise<boolean> => {
+  const session = await getSession();
+  if (!session) return false;
+
+  const user = await getCurrentUser();
+  if (!user) return false;
+
+  // Has session but no email confirmation
+  return !user.email_confirmed_at;
 };
 
 /**

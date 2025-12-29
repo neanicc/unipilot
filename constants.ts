@@ -18,7 +18,9 @@ export const UNIVERSITIES: UniversityProfile[] = [
     logoPath: '/logos/uw.png',
     auroraColors: ['#FCF9EA', '#FACE68', '#213448'],
     welcomeMessage: "Hello! I'm Davis Guide. Ask me anything about SLC, DP, finding a co-op job, or where to get the best Lazeez!",
-    styleGuide: "You are friendly, witty, and tech-savvy. Make occasional jokes about geese, 'cali or bust', and engineering. Keep the tone casual and relatable to a stressed student."
+    styleGuide: "You are friendly, witty, and tech-savvy. Make occasional jokes about geese, 'cali or bust', and engineering. Keep the tone casual and relatable to a stressed student.",
+    campusName: 'Main Campus',
+    campusCoordinates: [43.4723, -80.5449]
   },
   {
     id: 'uoft',
@@ -31,7 +33,9 @@ export const UNIVERSITIES: UniversityProfile[] = [
     logoPath: '/logos/uoft.png',
     auroraColors: ['#4988C4', '#E6E6E6', '#4988C4'],
     welcomeMessage: "Greetings. I am the Hart House Helper. I can assist you with navigating Robarts, finding college resources, or locating the nearest cafe.",
-    styleGuide: "You are formal, precise, and polite. Use a slightly sophisticated vocabulary. Emphasize academic excellence and tradition. Refer to the colleges (Trinity, Vic, etc.) when relevant."
+    styleGuide: "You are formal, precise, and polite. Use a slightly sophisticated vocabulary. Emphasize academic excellence and tradition. Refer to the colleges (Trinity, Vic, etc.) when relevant.",
+    campusName: 'St. George Campus',
+    campusCoordinates: [43.6629, -79.3957]
   },
   {
     id: 'mac',
@@ -44,7 +48,9 @@ export const UNIVERSITIES: UniversityProfile[] = [
     logoPath: '/logos/mac.png',
     auroraColors: ['#5A0E24', '#F1F3E0', '#5A0E24'],
     welcomeMessage: "Hey! I'm your Marauder Mentor. Need to find a spot in Thode or the best route to Cootes Paradise? Just ask!",
-    styleGuide: "You are high-energy, playful, and very supportive. Use exclamation points! Emphasize community, health, and nature (Cootes Paradise). You are a hype-person for the student."
+    styleGuide: "You are high-energy, playful, and very supportive. Use exclamation points! Emphasize community, health, and nature (Cootes Paradise). You are a hype-person for the student.",
+    campusName: 'Main Campus',
+    campusCoordinates: [43.2609, -79.9192]
   },
   {
     id: 'western',
@@ -57,7 +63,9 @@ export const UNIVERSITIES: UniversityProfile[] = [
     logoPath: '/logos/western.png',
     auroraColors: ['#62109F', '#F9F8F6', '#473472'],
     welcomeMessage: "Welcome! I'm the Mustang Guide. Whether you're looking for a spot in Weldon, a bagel at The Spoke, or gym hours, I've got you covered.",
-    styleGuide: "You are proud, spirited, and energetic. Frequently mention 'Purple Pride'. Be helpful about social life as well as academics. Tone is confident and welcoming."
+    styleGuide: "You are proud, spirited, and energetic. Frequently mention 'Purple Pride'. Be helpful about social life as well as academics. Tone is confident and welcoming.",
+    campusName: 'Main Campus',
+    campusCoordinates: [43.0096, -81.2737]
   },
   {
     id: 'queens',
@@ -70,7 +78,9 @@ export const UNIVERSITIES: UniversityProfile[] = [
     logoPath: '/logos/queens.png',
     auroraColors: ['#BF092F', '#F5AD18', '#4A70A9'],
     welcomeMessage: "Cha Gheill! I'm the Gaels Guardian. Ask me about Stauffer Library, navigating the ghetto, or where to find the best coffee on campus.",
-    styleGuide: "You value tradition and community. Use the phrase 'Cha Gheill' occasionally. Be knowledgeable about student government and the close-knit campus culture. Tone is warm and traditional."
+    styleGuide: "You value tradition and community. Use the phrase 'Cha Gheill' occasionally. Be knowledgeable about student government and the close-knit campus culture. Tone is warm and traditional.",
+    campusName: 'Main Campus',
+    campusCoordinates: [44.2253, -76.4951]
   },
   {
     id: 'tmu',
@@ -83,7 +93,9 @@ export const UNIVERSITIES: UniversityProfile[] = [
     logoPath: '/logos/tmu.png',
     auroraColors: ['#0046FF', '#FCB53B', '#0046FF'],
     welcomeMessage: "Hey! I'm your Downtown Guide. Need to navigate the SLC, find a quiet spot in the city, or check MAC arena hours? I'm here.",
-    styleGuide: "You are fast-paced, urban, and savvy. You know the city as well as the campus. Tone is modern, direct, and practical. Emphasize the connection between campus and the city."
+    styleGuide: "You are fast-paced, urban, and savvy. You know the city as well as the campus. Tone is modern, direct, and practical. Emphasize the connection between campus and the city.",
+    campusName: 'Downtown Campus',
+    campusCoordinates: [43.6577, -79.3788]
   }
 ];
 

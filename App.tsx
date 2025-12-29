@@ -4,7 +4,7 @@ import { Message, Sender, UserStats, ChatSession } from './types';
 import { generateResponse } from './services/geminiService';
 import { getUserStats, processUserInteraction, generateUserContextSummary } from './services/statsService';
 import { getChatSessions, createChatSession, addMessage, deleteChatSession } from './services/chatService';
-import { isAuthenticated, logout, getUserProfile } from './services/authService';
+import { isAuthenticated, logout, getUserProfile, isAwaitingEmailConfirmation } from './services/authService';
 import { DATA_UW, DATA_UOFT, DATA_MAC, DATA_WESTERN, DATA_QUEENS, DATA_TMU } from './services/campusData';
 import UniversitySelector from './components/UniversitySelector';
 import MessageBubble from './components/MessageBubble';
@@ -13,15 +13,45 @@ import AboutModal from './components/AboutModal';
 import EventsTab from './components/EventsTab';
 import MultiFaithTab from './components/MultiFaithTab';
 import FaqTab from './components/FaqTab';
+import CampusMapTab from './components/CampusMapTab';
 import AuthScreen from './components/AuthScreen';
 import Aurora from './components/Aurora';
-import { Send, GraduationCap, Info, Trash2, Trophy, Check, Star, MessageSquare, Calendar, History, Plus, ChevronDown, Heart, LogOut, HelpCircle } from 'lucide-react';
+import { Send, GraduationCap, Info, Trash2, Trophy, Check, Star, MessageSquare, Calendar, History, Plus, ChevronDown, Heart, LogOut, HelpCircle, MapPin } from 'lucide-react';
 
 const generateId = () => Math.random().toString(36).substring(2, 9);
+
+// LocalStorage helpers for map locations (not stored in Supabase)
+const MAP_LOCATIONS_KEY = 'unipilot_map_locations';
+
+const saveMapLocation = (messageId: string, mapLocation: { lat: number; lng: number; name: string }) => {
+  try {
+    const stored = localStorage.getItem(MAP_LOCATIONS_KEY);
+    const locations = stored ? JSON.parse(stored) : {};
+    locations[messageId] = mapLocation;
+    localStorage.setItem(MAP_LOCATIONS_KEY, JSON.stringify(locations));
+  } catch (e) {
+    console.error('Failed to save map location:', e);
+  }
+};
+
+const getMapLocations = (): Record<string, { lat: number; lng: number; name: string }> => {
+  try {
+    const stored = localStorage.getItem(MAP_LOCATIONS_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch (e) {
+    console.error('Failed to load map locations:', e);
+    return {};
+  }
+};
+
+const getMapLocation = (messageId: string): { lat: number; lng: number; name: string } | undefined => {
+  return getMapLocations()[messageId];
+};
 
 const App: React.FC = () => {
   // console.log("App component is initializing...");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
 
   // Initial stats state
@@ -36,16 +66,25 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Always check Supabase auth since chat services require it
+      // Check if fully authenticated (email confirmed)
       const authenticated = await isAuthenticated();
       setIsLoggedIn(authenticated);
+
+      // Check if awaiting email confirmation
+      if (!authenticated) {
+        const awaitingEmail = await isAwaitingEmailConfirmation();
+        setAwaitingConfirmation(awaitingEmail);
+      } else {
+        setAwaitingConfirmation(false);
+      }
+
       setAuthLoading(false);
     };
     checkAuth();
   }, []);
 
   const [selectedUniId, setSelectedUniId] = useState<string>(DEFAULT_UNIVERSITY_ID);
-  const [activeTab, setActiveTab] = useState<'chat' | 'events' | 'multifaith' | 'faq'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'events' | 'multifaith' | 'faq' | 'map'>('chat');
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -198,7 +237,13 @@ const App: React.FC = () => {
 
   const handleLoadSession = (session: ChatSession) => {
     setCurrentSessionId(session.id);
-    setMessages(session.messages);
+    // Restore map locations from localStorage for each message
+    const mapLocations = getMapLocations();
+    const messagesWithMaps = session.messages.map(msg => ({
+      ...msg,
+      mapLocation: mapLocations[msg.id] || msg.mapLocation
+    }));
+    setMessages(messagesWithMaps);
     setSelectedUniId(session.universityId);
     prevUniIdRef.current = session.universityId;
     setIsHistoryOpen(false);
@@ -296,13 +341,20 @@ const App: React.FC = () => {
         savedAiMessage = await addMessage(activeSessionId, text, Sender.AI);
       }
 
+      const aiMessageId = savedAiMessage?.id || generateId();
+
       const newAiMessage: Message = {
-        id: savedAiMessage?.id || generateId(),
+        id: aiMessageId,
         text: text,
         sender: Sender.AI,
         timestamp: new Date(),
         mapLocation: mapLocation
       };
+
+      // Save map location to localStorage for persistence
+      if (mapLocation) {
+        saveMapLocation(aiMessageId, mapLocation);
+      }
 
       const finalMessages = [...updatedMessages, newAiMessage];
       setMessages(finalMessages);
@@ -362,8 +414,56 @@ const App: React.FC = () => {
     </div>;
   }
 
+  // Show confirmation pending screen for users who signed up but haven't confirmed email
+  if (awaitingConfirmation) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black p-4 relative" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+        <Aurora
+          colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
+        />
+        <div className="bg-black/60 backdrop-blur-xl w-full max-w-md p-8 rounded-md shadow-xl border border-white/20 relative z-10 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-500 text-white rounded-full mb-4 shadow-lg">
+            <span className="text-3xl">📧</span>
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">Check Your Email</h1>
+          <p className="text-white/70 mb-6">
+            We've sent a confirmation link to your email address. Please click the link to verify your account before continuing.
+          </p>
+          <div className="bg-white/10 rounded-md p-4 mb-6">
+            <p className="text-white/50 text-sm">
+              Didn't receive the email? Check your spam folder or try signing up again with a different email.
+            </p>
+          </div>
+          <button
+            onClick={async () => {
+              await logout();
+              setAwaitingConfirmation(false);
+              setIsLoggedIn(false);
+            }}
+            className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-md transition-all font-medium"
+          >
+            Back to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (!isLoggedIn) {
-    return <AuthScreen onAuthSuccess={() => setIsLoggedIn(true)} />;
+    return <AuthScreen onAuthSuccess={async () => {
+      // Re-check auth state after signup/login
+      const authenticated = await isAuthenticated();
+      if (authenticated) {
+        setIsLoggedIn(true);
+        setAwaitingConfirmation(false);
+      } else {
+        const awaitingEmail = await isAwaitingEmailConfirmation();
+        setAwaitingConfirmation(awaitingEmail);
+      }
+    }} />;
   }
 
   return (
@@ -560,6 +660,16 @@ const App: React.FC = () => {
             <HelpCircle size={16} />
             FAQ
           </button>
+          <button
+            onClick={() => setActiveTab('map')}
+            className={`pb-2 text-sm font-medium border-b-2 flex items-center gap-2 transition-colors whitespace-nowrap ${activeTab === 'map'
+              ? 'border-white text-white'
+              : 'border-transparent text-white/50 hover:text-white/80'
+              }`}
+          >
+            <MapPin size={16} />
+            Map
+          </button>
         </div>
       </header>
 
@@ -605,6 +715,10 @@ const App: React.FC = () => {
 
           {activeTab === 'faq' && (
             <FaqTab faq={currentCampusData.faq} university={currentUniversity} />
+          )}
+
+          {activeTab === 'map' && (
+            <CampusMapTab university={currentUniversity} />
           )}
 
         </div>

@@ -36,6 +36,8 @@ export interface UniversityProfile {
   auroraColors: string[]; // Array of 3 hex colors for Aurora background
   welcomeMessage: string;
   styleGuide: string; // Specific instruction for the AI persona tone
+  campusName: string; // e.g. "St. George Campus", "Main Campus"
+  campusCoordinates: [number, number]; // [lat, lng] for campus center
 }
 
 export interface CampusEvent {
