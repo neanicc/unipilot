@@ -150,6 +150,12 @@ const App: React.FC = () => {
               if (signupUni) {
                 setUserUniversity(signupUni.name);
               }
+            } else {
+              // Fallback: use default university if none set in profile
+              const defaultUni = UNIVERSITIES.find(u => u.id === DEFAULT_UNIVERSITY_ID);
+              if (defaultUni) {
+                setUserUniversity(defaultUni.name);
+              }
             }
           }
 

@@ -22,11 +22,16 @@ export const register = async (email: string, password: string, name: string, un
   }
 
   // Update public profile with selected university
+  // Use upsert to ensure the row exists (trigger might not have run yet)
   if (data.user) {
     const { error: profileError } = await supabase
       .from('users')
-      .update({ selected_university_id: universityId })
-      .eq('id', data.user.id);
+      .upsert({ 
+        id: data.user.id, 
+        selected_university_id: universityId 
+      }, { 
+        onConflict: 'id' 
+      });
 
     if (profileError) {
       console.error('Error updating user profile:', profileError);
