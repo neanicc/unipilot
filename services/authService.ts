@@ -24,6 +24,12 @@ export const register = async (email: string, password: string, name: string, un
     throw new Error(error.message);
   }
 
+  // Check if email already exists - Supabase returns user with empty identities array
+  // This is a security feature to prevent email enumeration, but we can detect it
+  if (data.user && data.user.identities && data.user.identities.length === 0) {
+    throw new Error('An account already exists with this email. Please log in instead.');
+  }
+
   // Note: The university is stored in auth metadata (user_metadata.selected_university)
   // This bypasses RLS issues with the public.users table
   // The App.tsx loadData function reads from metadata first
