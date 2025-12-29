@@ -15,7 +15,7 @@ export const register = async (email: string, password: string, name: string, un
     options: {
       data: {
         full_name: name,
-        selected_university: universityId, // Also store in auth metadata as backup
+        selected_university: universityId, // Store in auth metadata (reliable, no RLS issues)
       },
     },
   });
@@ -24,56 +24,11 @@ export const register = async (email: string, password: string, name: string, un
     throw new Error(error.message);
   }
 
-  // Update public profile with selected university
-  // The database trigger creates the row, we need to update it after trigger runs
-  if (data.user) {
-    const userId = data.user.id;
-    
-    // Retry logic - the trigger might take a moment to create the row
-    let updated = false;
-    for (let attempt = 1; attempt <= 5; attempt++) {
-      // Wait before each attempt (increasing delay)
-      await new Promise(resolve => setTimeout(resolve, attempt * 300));
-      
-      // Try to update
-      const { error: updateError, count } = await supabase
-        .from('users')
-        .update({ selected_university_id: universityId })
-        .eq('id', userId)
-        .select();
-
-      console.log(`Update attempt ${attempt}:`, { updateError, count, universityId });
-
-      if (!updateError && count && count > 0) {
-        console.log('Successfully updated university to:', universityId);
-        updated = true;
-        break;
-      }
-      
-      if (updateError) {
-        console.error(`Update attempt ${attempt} error:`, updateError);
-      }
-    }
-
-    // If all updates failed, try direct insert as last resort
-    if (!updated) {
-      console.log('All update attempts failed, trying insert...');
-      const { error: insertError } = await supabase
-        .from('users')
-        .upsert({ 
-          id: userId, 
-          selected_university_id: universityId 
-        }, { 
-          onConflict: 'id' 
-        });
-      
-      if (insertError) {
-        console.error('Insert/upsert error:', insertError);
-      } else {
-        console.log('Upsert succeeded with university:', universityId);
-      }
-    }
-  }
+  // Note: The university is stored in auth metadata (user_metadata.selected_university)
+  // This bypasses RLS issues with the public.users table
+  // The App.tsx loadData function reads from metadata first
+  
+  console.log('User registered successfully, university stored in metadata:', universityId);
 
   return data;
 };
