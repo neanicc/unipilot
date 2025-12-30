@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
-  Plus, 
-  MessageSquare, 
-  Calendar, 
-  Heart, 
-  ChevronLeft, 
+import {
+  Plus,
+  MessageSquare,
+  Calendar,
+  Heart,
+  ChevronLeft,
   ChevronRight,
   Trash2,
   LogOut,
@@ -12,8 +12,10 @@ import {
   HelpCircle,
   PanelLeftOpen,
   PanelLeftClose,
-  MapPin
+  MapPin,
+  AlertTriangle
 } from 'lucide-react';
+import ReportProblemForm from './ReportProblemForm';
 import { UniversityProfile, ChatSession } from '../types';
 
 interface SidebarProps {
@@ -55,11 +57,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const [isUniDropdownOpen, setIsUniDropdownOpen] = React.useState(false);
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = React.useState(false);
-  
+  const [isReportFormOpen, setIsReportFormOpen] = React.useState(false);
+
   // Get the user's signup university profile for the avatar color
   const userUniProfile = universities.find(u => u.name === userUniversity || u.shortName === userUniversity);
   const selectedUni = universities.find(u => u.id === selectedUniId) || universities[0];
-  
+
   // University avatar colors (vibrant, solid colors for avatars)
   const getAvatarColor = (uniId?: string) => {
     const colors: Record<string, string> = {
@@ -82,10 +85,9 @@ const Sidebar: React.FC<SidebarProps> = ({
   const userName = userEmail || 'User';
 
   return (
-    <div 
-      className={`fixed left-0 top-0 h-full bg-black/80 backdrop-blur-xl border-r border-white/10 z-30 transition-all duration-300 flex flex-col ${
-        isOpen ? 'w-64' : 'w-16'
-      }`}
+    <div
+      className={`fixed left-0 top-0 h-full bg-black/80 backdrop-blur-xl border-r border-white/10 z-30 transition-all duration-300 flex flex-col ${isOpen ? 'w-64' : 'w-16'
+        }`}
       style={{ fontFamily: "'Montserrat', sans-serif" }}
     >
       {/* Header - Logo & Collapse Button */}
@@ -95,15 +97,15 @@ const Sidebar: React.FC<SidebarProps> = ({
             {/* Expanded: Logo Row */}
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <img 
-                  src={currentUniversity.logoPath} 
+                <img
+                  src={currentUniversity.logoPath}
                   alt={currentUniversity.shortName}
                   className="w-8 h-8 object-contain"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
                 <span className="text-lg font-bold text-white">UniPilot</span>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-colors"
                 title="Collapse sidebar"
@@ -119,8 +121,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 className="w-full flex items-center justify-between px-3 py-2 rounded-md bg-white/10 hover:bg-white/15 border border-white/20 transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <img 
-                    src={selectedUni.logoPath} 
+                  <img
+                    src={selectedUni.logoPath}
                     alt={selectedUni.shortName}
                     className="w-5 h-5 object-contain"
                     onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -139,12 +141,11 @@ const Sidebar: React.FC<SidebarProps> = ({
                         onSelectUni(uni.id);
                         setIsUniDropdownOpen(false);
                       }}
-                      className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/10 transition-colors ${
-                        selectedUniId === uni.id ? 'bg-white/15' : ''
-                      }`}
+                      className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-white/10 transition-colors ${selectedUniId === uni.id ? 'bg-white/15' : ''
+                        }`}
                     >
-                      <img 
-                        src={uni.logoPath} 
+                      <img
+                        src={uni.logoPath}
                         alt={uni.shortName}
                         className="w-5 h-5 object-contain"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -159,13 +160,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         ) : (
           /* Collapsed: Just logo with expand button */
           <div className="flex flex-col items-center gap-2">
-            <img 
-              src={currentUniversity.logoPath} 
+            <img
+              src={currentUniversity.logoPath}
               alt={currentUniversity.shortName}
               className="w-8 h-8 object-contain"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
             />
-            <button 
+            <button
               onClick={() => setIsOpen(true)}
               className="p-1.5 rounded-md hover:bg-white/10 text-white/60 hover:text-white transition-colors"
               title="Expand sidebar"
@@ -180,9 +181,8 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className={`p-2 ${isOpen ? '' : 'flex justify-center'}`}>
         <button
           onClick={onNewChat}
-          className={`flex items-center gap-2 rounded-md bg-white/10 hover:bg-white/15 border border-white/20 transition-colors text-white font-medium text-sm ${
-            isOpen ? 'w-full px-3 py-2.5' : 'p-2.5'
-          }`}
+          className={`flex items-center gap-2 rounded-md bg-white/10 hover:bg-white/15 border border-white/20 transition-colors text-white font-medium text-sm ${isOpen ? 'w-full px-3 py-2.5' : 'p-2.5'
+            }`}
           title="New Chat"
         >
           <Plus size={16} />
@@ -194,13 +194,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className={`px-2 pb-2 ${isOpen ? '' : 'flex flex-col items-center'}`}>
         <button
           onClick={() => setActiveTab('chat')}
-          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${
-            isOpen ? 'w-full px-3 py-2' : 'p-2.5 mb-1'
-          } ${
-            activeTab === 'chat' 
-              ? 'bg-white/15 text-white' 
+          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${isOpen ? 'w-full px-3 py-2' : 'p-2.5 mb-1'
+            } ${activeTab === 'chat'
+              ? 'bg-white/15 text-white'
               : 'text-white/60 hover:text-white hover:bg-white/10'
-          }`}
+            }`}
           title="Chat Assistant"
         >
           <MessageSquare size={16} />
@@ -208,13 +206,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('events')}
-          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${
-            isOpen ? 'w-full px-3 py-2' : 'p-2.5 mb-1'
-          } ${
-            activeTab === 'events' 
-              ? 'bg-white/15 text-white' 
+          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${isOpen ? 'w-full px-3 py-2' : 'p-2.5 mb-1'
+            } ${activeTab === 'events'
+              ? 'bg-white/15 text-white'
               : 'text-white/60 hover:text-white hover:bg-white/10'
-          }`}
+            }`}
           title="Campus Events"
         >
           <Calendar size={16} />
@@ -222,13 +218,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('multifaith')}
-          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${
-            isOpen ? 'w-full px-3 py-2' : 'p-2.5 mb-1'
-          } ${
-            activeTab === 'multifaith' 
-              ? 'bg-white/15 text-white' 
+          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${isOpen ? 'w-full px-3 py-2' : 'p-2.5 mb-1'
+            } ${activeTab === 'multifaith'
+              ? 'bg-white/15 text-white'
               : 'text-white/60 hover:text-white hover:bg-white/10'
-          }`}
+            }`}
           title="Multi-Faith Spaces"
         >
           <Heart size={16} />
@@ -236,13 +230,11 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('faq')}
-          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${
-            isOpen ? 'w-full px-3 py-2' : 'p-2.5'
-          } ${
-            activeTab === 'faq' 
-              ? 'bg-white/15 text-white' 
+          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${isOpen ? 'w-full px-3 py-2' : 'p-2.5'
+            } ${activeTab === 'faq'
+              ? 'bg-white/15 text-white'
               : 'text-white/60 hover:text-white hover:bg-white/10'
-          }`}
+            }`}
           title="FAQ"
         >
           <HelpCircle size={16} />
@@ -250,19 +242,40 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <button
           onClick={() => setActiveTab('map')}
-          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${
-            isOpen ? 'w-full px-3 py-2' : 'p-2.5'
-          } ${
-            activeTab === 'map' 
-              ? 'bg-white/15 text-white' 
+          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors ${isOpen ? 'w-full px-3 py-2' : 'p-2.5'
+            } ${activeTab === 'map'
+              ? 'bg-white/15 text-white'
               : 'text-white/60 hover:text-white hover:bg-white/10'
-          }`}
+            }`}
           title="Campus Map"
         >
           <MapPin size={16} />
           {isOpen && 'Campus Map'}
         </button>
+        {/* Report a Problem Button */}
+        <button
+          onClick={() => setIsReportFormOpen(!isReportFormOpen)}
+          className={`flex items-center gap-2 rounded-md text-sm font-medium transition-colors mt-2 ${isOpen ? 'w-full px-3 py-2' : 'p-2.5'
+            } ${isReportFormOpen
+              ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+              : 'text-white/60 hover:text-yellow-400 hover:bg-yellow-500/10 border border-transparent'
+            }`}
+          title="Report a Problem"
+        >
+          <AlertTriangle size={16} />
+          {isOpen && 'Report a Problem'}
+        </button>
       </div>
+
+      {/* Report Problem Form - Collapsible */}
+      {isOpen && isReportFormOpen && (
+        <div className="px-2 pb-2">
+          <ReportProblemForm
+            onClose={() => setIsReportFormOpen(false)}
+            userEmail={userEmail}
+          />
+        </div>
+      )}
 
       {/* Divider */}
       <div className="mx-2 border-t border-white/10"></div>
@@ -278,11 +291,10 @@ const Sidebar: React.FC<SidebarProps> = ({
               <div
                 key={session.id}
                 onClick={() => onLoadSession(session)}
-                className={`group flex items-center justify-between px-2 py-2 rounded-md cursor-pointer transition-colors mb-1 ${
-                  currentSessionId === session.id 
-                    ? 'bg-white/15' 
-                    : 'hover:bg-white/10'
-                }`}
+                className={`group flex items-center justify-between px-2 py-2 rounded-md cursor-pointer transition-colors mb-1 ${currentSessionId === session.id
+                  ? 'bg-white/15'
+                  : 'hover:bg-white/10'
+                  }`}
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-white truncate">{session.title || 'Untitled Chat'}</p>
@@ -308,7 +320,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         {isOpen ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 min-w-0">
-              <div 
+              <div
                 className="w-8 h-8 rounded-md flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
                 style={{ backgroundColor: getAvatarColor(userUniProfile?.id) }}
               >
@@ -338,7 +350,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             >
               {userName.charAt(0).toUpperCase()}
             </button>
-            
+
             {isLogoutPopupOpen && (
               <div className="absolute bottom-full left-0 mb-2 w-32 bg-black/95 backdrop-blur-xl rounded-md border border-white/20 overflow-hidden shadow-xl z-50">
                 <button
