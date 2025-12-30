@@ -64,6 +64,28 @@ const getAI = () => {
   return new GoogleGenerativeAI(apiKey);
 };
 
+// Retry utility with exponential backoff for 429 errors
+const retryWithBackoff = async <T>(
+  operation: () => Promise<T>,
+  retries: number = 3,
+  delay: number = 1000
+): Promise<T> => {
+  try {
+    return await operation();
+  } catch (error: any) {
+    const errorMsg = error.message || error.toString();
+    const isQuotaError = errorMsg.includes('429') || errorMsg.includes('quota');
+
+    if (isQuotaError && retries > 0) {
+      console.warn(`[Gemini] Rate limit hit. Retrying in ${delay}ms... (${retries} retries left)`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return retryWithBackoff(operation, retries - 1, delay * 2);
+    }
+
+    throw error;
+  }
+};
+
 // Map response schema for structured output
 const mapResponseSchema = {
   type: SchemaType.OBJECT,
@@ -169,9 +191,9 @@ Format with Markdown. **Bold key locations** and important terms.`;
       }
     });
 
-    // Start chat and send message
+    // Start chat and send message with retry logic
     const chat = model.startChat({ history: chatHistory });
-    const result = await chat.sendMessage(userMessage);
+    const result = await retryWithBackoff(() => chat.sendMessage(userMessage));
     const responseText = result.response.text();
 
     // Parse JSON response
