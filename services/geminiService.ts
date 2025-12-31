@@ -95,8 +95,8 @@ export const generateResponse = async (
   if (USE_BACKEND) {
     const { chatWithVercelAPI } = await import('./apiService');
     return chatWithVercelAPI(
-      universityId, 
-      userMessage, 
+      universityId,
+      userMessage,
       history.map(m => ({ sender: m.sender, text: m.text })),
       userContext
     );
@@ -277,7 +277,24 @@ export const generateEventSummary = async (
   styleGuide: string
 ): Promise<string> => {
 
-  // Client-Side Generation
+  // Use backend API in production
+  if (USE_BACKEND) {
+    try {
+      const response = await fetch('/api/events-summary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ universityName, events, personaName, styleGuide })
+      });
+
+      const data = await response.json();
+      return data.summary || 'Check out the events below!';
+    } catch (error) {
+      console.error('Event Summary API Error:', error);
+      return 'Check out the events below!';
+    }
+  }
+
+  // Client-Side Generation (development only)
   const genAI = getAI();
   if (!genAI) {
     return "Unable to generate summary: API Key missing.";
