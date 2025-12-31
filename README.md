@@ -85,7 +85,6 @@ A searchable directory of prayer rooms, meditation spaces, and religious facilit
 
 - **Comprehensive Listings** — Muslim prayer rooms, chapel spaces, meditation rooms, chaplaincy offices
 - **Detailed Information** — Location, hours, capacity, amenities (wudu facilities, prayer mats, etc.)
-- **Interactive Map View** — See all faith spaces plotted on the campus map
 - **Accessibility Info** — Wheelchair access, gender-specific spaces
 
 ---
@@ -103,7 +102,7 @@ Quick answers to the most common campus questions without needing to chat.
 Full interactive map of the entire campus.
 
 - **Leaflet-Powered** — Smooth panning, zooming, and marker clustering
-- **Navigation Integration** — Deep-links with directions context
+- **Navigation Integration** — Navigate through campus
 
 ---
 
