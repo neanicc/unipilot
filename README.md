@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="public/logos/uw.png" alt="UniPilot Logo" width="80" height="80" />
-</p>
-
 <h1 align="center">🎓 UniPilot</h1>
 
 <p align="center">
