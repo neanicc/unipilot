@@ -197,8 +197,8 @@ export const incrementMessageCount = async (): Promise<void> => {
     // Award XP for each message
     await addExperience(10);
 
-    // Check badge conditions
-    if (newCount === 1) {
+    // Check badge conditions - use >= for retroactive unlock
+    if (newCount >= 1) {
         await unlockBadge('freshman');
     }
 
@@ -249,23 +249,22 @@ export const processUserInteraction = async (
         }
     }
 
-    // C. Check Badges locally
+    // C. Check Badges locally (use >= for retroactive unlock)
     const badgesToUnlock: string[] = [];
 
-    // - Freshman: First message
-    if (messagesCount === 1) badgesToUnlock.push('freshman');
+    // - Freshman: Has sent at least 1 message
+    if (messagesCount >= 1) badgesToUnlock.push('freshman');
 
     // - Night Owl: Message between 10PM and 6AM
     const hour = new Date().getHours();
     if (hour >= 22 || hour < 6) badgesToUnlock.push('night_owl');
 
-    // - Explorer: 3+ topics
+    // - Explorer: 3+ topics explored
     if (topicsExplored.length >= 3) badgesToUnlock.push('explorer');
 
-    // - Scholar: Level 5+
-    // Calculate potential new level to check for Scholar
-    const potentialNewLevel = calculateLevel(experience + (badgesToUnlock.length * 50)); // Estimate generic badge XP
-    if (potentialNewLevel >= 5) badgesToUnlock.push('scholar');
+    // - Scholar: Level 5+ (check current level, not just potential)
+    const currentLevel = calculateLevel(experience);
+    if (currentLevel >= 5) badgesToUnlock.push('scholar');
 
     // Apply unlocks
     let badgesChanged = false;
