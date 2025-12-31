@@ -173,11 +173,17 @@ If the question is not about a physical place, set mapLocation to null.
 
 Format with Markdown. **Bold key locations** and important terms.`;
 
-    // Build conversation history
-    const chatHistory = (history || []).map((msg: { sender: string; text: string }) => ({
+    // Build conversation history - limit to last 6 messages for AI context
+    let chatHistory = (history || []).slice(-6).map((msg: { sender: string; text: string }) => ({
       role: msg.sender === 'user' ? 'user' : 'model',
       parts: [{ text: msg.text }]
     }));
+
+    // Gemini requires history to start with 'user', not 'model'
+    // Drop leading model messages if present
+    while (chatHistory.length > 0 && chatHistory[0].role === 'model') {
+      chatHistory = chatHistory.slice(1);
+    }
 
     // Create the model with structured output
     const model = ai.getGenerativeModel({
