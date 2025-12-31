@@ -1,4 +1,4 @@
-import { CampusData } from '../types';
+import { CampusData } from '../types.js';
 
 export const DATA_UW: CampusData = {
   locations: [

@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
-import { DATA_UW, DATA_UOFT, DATA_MAC, DATA_WESTERN, DATA_QUEENS, DATA_TMU } from '../services/campusData.ts';
+import { DATA_UW, DATA_UOFT, DATA_MAC, DATA_WESTERN, DATA_QUEENS, DATA_TMU } from '../services/campusData.js';
 
 // Campus info for personas
 const CAMPUS_INFO: Record<string, { name: string; shortName: string; personaName: string; styleGuide: string }> = {
