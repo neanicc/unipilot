@@ -54,6 +54,7 @@ Each university has a distinct AI personality trained on campus-specific data:
 - **Mustang Guide** (Western) — Spirited, proud, Purple Pride
 - **Gaels Guardian** (Queen's) — Traditional, warm, "Cha Gheill!"
 - **Downtown Guide** (TMU) — Urban, fast-paced, city-savvy
+- More universities & colleges to come soon!
 
 **Smart Responses:**
 - Targets **150-300 words** per response (not too short, not overwhelming)
