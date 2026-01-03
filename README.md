@@ -37,6 +37,11 @@ Unlike generic AI assistants, **UniPilot is purpose-built for university student
 
 ---
 
+## 💻 Full Website: 
+**https://unipilot-atlas.vercel.app/**
+
+---
+
 ## ✨ Features
 
 ### 💬 Chat Assistant
